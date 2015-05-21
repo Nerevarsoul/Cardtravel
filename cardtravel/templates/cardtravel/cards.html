@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+	{% for card in cards %}
+		{% include 'cardtravel/card.html' %}
+		<br>
+	{% endfor %}
+
+{% endblock %}

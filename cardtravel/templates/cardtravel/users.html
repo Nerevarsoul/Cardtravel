@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+	{% for profile in profiles %}
+		<a href="/profile/{{profile.user.id}}/">{{ profile.user.username}}</a>
+		<p><strong>email: </strong>{{ profile.user.email }}</p>
+		<p><strong>first name: </strong>{{ profile.user.first_name }}</p>
+		<p><strong>last_name: </strong>{{ profile.user.last_name }}</p>
+		<p><strong>last login: </strong>{{ profile.user.last_login }}</p>
+		<p><strong>date joined: </strong>{{ profile.user.date_joined }}</p>
+		<p><strong>address: </strong>{{ profile.adress }}</p>
+		<img src="{{profile.picture.url}}">
+		<br>
+		<br>
+	{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,13 @@
+#responsive-menu a {
+	text-decoration: none;
+	color: #7f7f7f;
+	font-size: 1.5em;
+}
+
+#responsive-menu a:hover {
+    color: white;
+}
+
+strong {
+	font-weight: bold;
+}

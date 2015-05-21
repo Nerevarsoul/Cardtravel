@@ -1,0 +1,10 @@
+
+	<h2><a href="/cards/{{card.id}}/">{{ card.name }}</a></h2>
+	<p><strong>country: </strong><a href="/cards/country/{{card.country_url}}/">{{ card.country }}</a></p>
+	<p><strong>series: </strong><a href="/cards/series/{{card.series_url}}/">{{ card.series }}</a></p>
+	<p><strong>catalog_codes: </strong>{{ card.catalog_codes }}</p>
+	<p><strong>issued_on: </strong><a href="/cards/year/{{card.issued_on}}/">{{ card.issued_on }}</a></p>
+	<p><strong>description: </strong>{{ card.description }}</p>
+	<img src="{{card.face_picture.url}}">
+	<img src="{{card.reverse_picture.url}}">
+	

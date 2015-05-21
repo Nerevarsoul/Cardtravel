@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+	
+	<h1>{{users.username}}</h1>
+	<p><strong>email: </strong>{{ users.email }}</p>
+	<p><strong>first name: </strong>{{ users.first_name }}</p>
+	<p><strong>last_name: </strong>{{ users.last_name }}</p>
+	<p><strong>last login: </strong>{{ users.last_login }}</p>
+	<p><strong>date joined: </strong>{{ users.date_joined }}</p>
+	<p><strong>address: </strong>{{ profiles.adress }}</p>
+	<img src="{{profiles.picture.url}}">
+
+
+{% endblock %}
