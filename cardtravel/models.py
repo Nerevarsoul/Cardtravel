@@ -3,13 +3,14 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class UserProfile(models.Model):
-	user = models.OneToOneField(User)
+	user = models.OneToOneField(User, related_name="profile")
 
 	picture = models.ImageField(upload_to='profile_images', blank=True)
 	adress = models.TextField(blank=True)
 
 	def __unicode__(self):
 		return self.user.username
+
 
 class Card(models.Model):
 	name = models.CharField(max_length=50)
@@ -23,3 +24,13 @@ class Card(models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+
+class WishList(models.Model):
+	user = models.OneToOneField(User)
+	wishlist = models.ManyToManyField(Card, blank=True, null=True)
+
+
+class Collection(models.Model):
+	user = models.OneToOneField(User)
+	collectionlist = models.ManyToManyField(Card, blank=True, null=True)

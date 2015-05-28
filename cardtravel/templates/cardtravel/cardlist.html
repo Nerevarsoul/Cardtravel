@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+	
+	<p><strong>{{users.username}} {{list_category}}:</strong></p>
+		{% for card in cards %}
+			{% include 'cardtravel/card.html' %}
+			<br>
+		{% endfor %}
+	</div>
+
+
+{% endblock %}

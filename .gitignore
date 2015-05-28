@@ -1,0 +1,6 @@
+﻿db.sqlite3
+/create_users.py
+/media/
+/*.sqlite3
+/*.pyc
+/cardtravel/migrations/

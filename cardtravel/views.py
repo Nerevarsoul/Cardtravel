@@ -2,13 +2,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.core.context_processors import csrf
+from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from cardtravel.forms import UserForm, UserProfileForm, CardForm
-from cardtravel.models import UserProfile, Card
+from cardtravel.models import UserProfile, Card, WishList, Collection
 
 
 def encode(raw_url):
@@ -69,6 +70,14 @@ def view_profile(request, user_id):
     args = {}
     args['profiles'] = UserProfile.objects.get(user=user_id)
     args['users'] = User.objects.get(id=user_id)
+    try:
+        args['wishlist'] = WishList.objects.get(id=user_id).wishlist.all()[0:3]
+    except ObjectDoesNotExist:
+        args['wishlist'] = []
+    try:
+        args['collection'] = Collection.objects.get(id=user_id).collectionlist.all()[0:3]
+    except ObjectDoesNotExist:
+        args['collection'] = []
     return render_to_response('cardtravel/profile.html', args, context)
 
 def view_users(request):
@@ -114,3 +123,14 @@ def view_categories(request, category, category_url):
         card.series_url = encode(card.series)
     args["cards"] = cards
     return render_to_response('cardtravel/category.html', args, context)
+
+def view_cardlist(request, user_id, list_category):
+    context = RequestContext(request)
+    args = {}
+    args['users'] = User.objects.get(id=user_id)
+    args['list_category'] = list_category
+    if list_category == 'wishlist':
+        args['cards'] = WishList.objects.get(id=user_id).wishlist.all()
+    elif list_category == 'collection':
+        args['cards'] = Collection.objects.get(id=user_id).collectionlist.all()
+    return render_to_response('cardtravel/cardlist.html', args, context)
