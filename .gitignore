@@ -2,5 +2,5 @@
 /create_users.py
 /media/
 /*.sqlite3
-/*.pyc
+*.pyc
 /cardtravel/migrations/

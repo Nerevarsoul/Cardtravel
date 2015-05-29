@@ -8,7 +8,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from cardtravel.forms import UserForm, UserProfileForm, CardForm
+from cardtravel.forms import UserForm, UserProfileForm, CardForm, EditProfileForm
 from cardtravel.models import UserProfile, Card, WishList, Collection
 
 
@@ -46,6 +46,32 @@ def register(request):
     return render_to_response('cardtravel/register.html', {'user_form': user_form, 
     	'profile_form': profile_form, 'registered': registered}, context)
 
+@login_required
+def edit_profile(request):
+    context = RequestContext(request)
+    user = request.user
+    profile = UserProfile.objects.get(user=user)
+    if request.POST:
+        editprofile_form = EditProfileForm(data=request.POST)
+        if editprofile_form.is_valid() and editprofile_form.has_changed():
+            user.username = request.POST['username']
+            user.email = request.POST['email']
+            user.save()
+            profile.adress = request.POST['adress']
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            profile.save()
+        else:
+            editprofile_form.errors
+    else:
+        editprofile_form = EditProfileForm(initial={
+                                            'username': user.username, 
+                                            'email': user.email,
+                                            'adress': profile.adress,
+                                            'picture': profile.picture})
+    return render_to_response('cardtravel/edit_profile.html', 
+        {'editprofile_form': editprofile_form}, context)        
+
 def login(request):
     context = RequestContext(request)
     if request.POST:
@@ -71,13 +97,25 @@ def view_profile(request, user_id):
     args['profiles'] = UserProfile.objects.get(user=user_id)
     args['users'] = User.objects.get(id=user_id)
     try:
-        args['wishlist'] = WishList.objects.get(id=user_id).wishlist.all()[0:3]
+        args['wishlist'] = WishList.objects.get(id=user_id).wishlist.all()
     except ObjectDoesNotExist:
         args['wishlist'] = []
     try:
-        args['collection'] = Collection.objects.get(id=user_id).collectionlist.all()[0:3]
+        args['collection'] = Collection.objects.get(id=user_id).collectionlist.all()
     except ObjectDoesNotExist:
         args['collection'] = []
+    if request.user.id != user_id:
+        try:
+            args['user_wishlist'] = WishList.objects.get(id=request.user.id).wishlist.all()
+        except ObjectDoesNotExist:
+            args['user_wishlist'] = []
+        try:
+            args['user_collection'] = Collection.objects.get(id=request.user.id).collectionlist.all()
+        except ObjectDoesNotExist:
+            args['user_collection'] = []
+    else:
+        args['user_wishlist'] = args['wishlist']
+        args['user_collection'] = args['collection']
     return render_to_response('cardtravel/profile.html', args, context)
 
 def view_users(request):
@@ -94,6 +132,14 @@ def view_cards(request):
         card.country_url = encode(card.country)
         card.series_url = encode(card.series)
     args["cards"] = cards
+    try:
+        args['user_wishlist'] = WishList.objects.get(id=request.user.id).wishlist.all()
+    except ObjectDoesNotExist:
+        args['user_wishlist'] = []
+    try:
+        args['user_collection'] = Collection.objects.get(id=request.user.id).collectionlist.all()
+    except ObjectDoesNotExist:
+        args['user_collection'] = []
     return render_to_response('cardtravel/cards.html', args, context)
 
 def view_card(request, card_id):
@@ -103,6 +149,14 @@ def view_card(request, card_id):
     card.country_url = encode(card.country)
     card.series_url = encode(card.series)
     args["card"] = card
+    try:
+        args['user_wishlist'] = WishList.objects.get(id=request.user.id).wishlist.all()
+    except ObjectDoesNotExist:
+        args['user_wishlist'] = []
+    try:
+        args['user_collection'] = Collection.objects.get(id=request.user.id).collectionlist.all()
+    except ObjectDoesNotExist:
+        args['user_collection'] = []
     return render_to_response('cardtravel/cardview.html', args, context)
 
 def view_categories(request, category, category_url):
@@ -122,6 +176,14 @@ def view_categories(request, category, category_url):
         card.country_url = encode(card.country)
         card.series_url = encode(card.series)
     args["cards"] = cards
+    try:
+        args['user_wishlist'] = WishList.objects.get(id=request.user.id).wishlist.all()
+    except ObjectDoesNotExist:
+        args['user_wishlist'] = []
+    try:
+        args['user_collection'] = Collection.objects.get(id=request.user.id).collectionlist.all()
+    except ObjectDoesNotExist:
+        args['user_collection'] = []
     return render_to_response('cardtravel/category.html', args, context)
 
 def view_cardlist(request, user_id, list_category):
@@ -133,4 +195,37 @@ def view_cardlist(request, user_id, list_category):
         args['cards'] = WishList.objects.get(id=user_id).wishlist.all()
     elif list_category == 'collection':
         args['cards'] = Collection.objects.get(id=user_id).collectionlist.all()
+    if request.user.id != user_id:
+        try:
+            args['user_wishlist'] = WishList.objects.get(id=request.user.id).wishlist.all()
+        except ObjectDoesNotExist:
+            args['user_wishlist'] = []
+        try:
+            args['user_collection'] = Collection.objects.get(id=request.user.id).collectionlist.all()
+        except ObjectDoesNotExist:
+            args['user_collection'] = []
     return render_to_response('cardtravel/cardlist.html', args, context)
+
+def add_card(request, list_category, card_id):
+    context = RequestContext(request)
+    card = Card.objects.get(id=card_id)
+    if list_category == 'wishlist':
+        cards = WishList.objects.get(id=request.user.id).wishlist
+        cards.add(card)
+    elif list_category == 'collection':
+        cards = Collection.objects.get(id=request.user.id).collectionlist
+        cards.add(card)
+    return redirect('/index/')
+
+def remove_card(request, list_category, card_id):
+    context = RequestContext(request)
+    card = Card.objects.get(id=card_id)
+    if list_category == 'wishlist':
+        cards = WishList.objects.get(id=request.user.id).wishlist
+        cards.remove(card)
+    elif list_category == 'collection':
+        cards = Collection.objects.get(id=request.user.id).collectionlist
+        cards.remove(card)
+    return redirect('/index/')
+
+

@@ -11,6 +11,9 @@
 	<p><strong>date joined: </strong>{{ users.date_joined }}</p>
 	<p><strong>address: </strong>{{ profiles.adress }}</p>
 	<img src="{{profiles.picture.url}}">
+	{% if user.id == users.id %}
+		<a href={% url 'edit_profile' %}>Edit your profile</a>
+	{% endif %}
 	<br>
 	<div class="row">
 		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">

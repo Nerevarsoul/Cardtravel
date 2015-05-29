@@ -18,3 +18,12 @@ class UserProfileForm(forms.ModelForm):
 class CardForm(forms.ModelForm):
 	class Meta:
 		model = Card
+
+class EditProfileForm(forms.ModelForm):
+	username = forms.CharField(max_length=30)
+	email = forms.EmailField()
+	class Meta:
+		model = UserProfile
+		fields = ('picture', 'adress')
+
+
