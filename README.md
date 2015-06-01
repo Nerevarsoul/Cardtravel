@@ -1,13 +1,13 @@
 # cardtravel
 This project was created to help Starbucks card collectors exchange their cards.
 
-<h2>Features</h2>
+<h3>Features</h3>
 <ul>
 <li>User registration and authorization</li>
 <li>Starbucks cards catalogue (groups and categories)</li>
 </ul>
 
-#<h2>Planned features</h2>
+<h3>Planned features</h3>
 <ul>
 <li>Private messages between users</li>
 <li>Email confirmation</li>
@@ -15,7 +15,7 @@ This project was created to help Starbucks card collectors exchange their cards.
 <li>User cards gallery (collection, wanted and for offer)</li>
 </ul>
 
-#<h2>Requirements</h2>
+<h3>Requirements</h3>
 <ul>
 <li>Django==1.6.7</li>
 <li>Pillow==2.8.1</li>
@@ -23,5 +23,5 @@ This project was created to help Starbucks card collectors exchange their cards.
 <li>wsgiref==0.1.2</li>
 </ul>
 
-#<h2>Design</h2>
+<h3>Design</h3>
 Twitter Bootstrap 
