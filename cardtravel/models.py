@@ -11,6 +11,20 @@ class UserProfile(models.Model):
 	def __unicode__(self):
 		return self.user.username
 
+	def get_wishlist(self):
+		try:
+			wishlist = self.user.wishlist.wishlist.all()
+		except ObjectDoesNotExist:
+			wishlist = []
+		return wishlist
+
+	def get_collection(self):
+		try:
+			collection = self.user.collection.collectionlist.all()
+		except ObjectDoesNotExist:
+			collection = []
+		return collection
+
 
 class Card(models.Model):
 	name = models.CharField(max_length=50)
@@ -30,7 +44,13 @@ class WishList(models.Model):
 	user = models.OneToOneField(User)
 	wishlist = models.ManyToManyField(Card, blank=True, null=True)
 
+	def __unicode__(self):
+		return self.user.username + "'s wishlist"
+
 
 class Collection(models.Model):
 	user = models.OneToOneField(User)
 	collectionlist = models.ManyToManyField(Card, blank=True, null=True)
+
+	def __unicode__(self):
+		return self.user.username + "'s collection"

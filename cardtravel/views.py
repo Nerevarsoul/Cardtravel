@@ -19,16 +19,11 @@ def encode(raw_url):
 def decode(cooked_url):
     return cooked_url.replace('_', ' ')
 
-def gain_userlist(user_id):
+def gain_userlist(user):
+    user_profile = UserProfile.objects.get(user=user)
     args = {}
-    try:
-        args['user_wishlist'] = WishList.objects.get(id=user_id).wishlist.all()
-    except ObjectDoesNotExist:
-        args['user_wishlist'] = []
-    try:
-        args['user_collection'] = Collection.objects.get(id=user_id).collectionlist.all()
-    except ObjectDoesNotExist:
-        args['user_collection'] = []
+    args['user_wishlist'] = user_profile.get_wishlist()
+    args['user_collection'] = user_profile.get_collection()
     return args
 
 
@@ -108,19 +103,14 @@ def logout(request):
 def view_profile(request, user_id):
     context = RequestContext(request)
     args = {}
-    args['profiles'] = UserProfile.objects.get(user=user_id)
+    user_profile = UserProfile.objects.get(user=user_id)
+    args['profiles'] = user_profile
     args['users'] = User.objects.get(id=user_id)
-    try:
-        args['wishlist'] = WishList.objects.get(id=user_id).wishlist.all()
-    except ObjectDoesNotExist:
-        args['wishlist'] = []
-    try:
-        args['collection'] = Collection.objects.get(id=user_id).collectionlist.all()
-    except ObjectDoesNotExist:
-        args['collection'] = []
+    args['wishlist'] = user_profile.get_wishlist()
+    args['collection'] = user_profile.get_collection()
 
     if request.user.id != user_id:
-        args.update(gain_userlist(request.user.id))
+        args.update(gain_userlist(request.user))
     else:
         args['user_wishlist'] = args['wishlist']
         args['user_collection'] = args['collection']
@@ -145,7 +135,7 @@ def view_cards(request):
         card.country_url = encode(card.country)
         card.series_url = encode(card.series)
     args["cards"] = cards
-    args.update(gain_userlist(request.user.id))
+    args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/cards.html', args, context)
 
 def view_card(request, card_id):
@@ -155,7 +145,7 @@ def view_card(request, card_id):
     card.country_url = encode(card.country)
     card.series_url = encode(card.series)
     args["card"] = card
-    args.update(gain_userlist(request.user.id))
+    args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/cardview.html', args, context)
 
 def view_categories(request, category, category_url):
@@ -175,26 +165,21 @@ def view_categories(request, category, category_url):
         card.country_url = encode(card.country)
         card.series_url = encode(card.series)
     args["cards"] = cards
-    args.update(gain_userlist(request.user.id))
+    args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/category.html', args, context)
 
 def view_cardlist(request, user_id, list_category):
     context = RequestContext(request)
     args = {}
+    user_profile = UserProfile.objects.get(user=user_id)
     args['users'] = User.objects.get(id=user_id)
     args['list_category'] = list_category
     if list_category == 'wishlist':
-        try:
-            args['cards'] = WishList.objects.get(id=user_id).wishlist.all()
-        except ObjectDoesNotExist:
-            args['cards'] = []
+        args['cards'] = user_profile.get_wishlist()
     elif list_category == 'collection':
-        try:
-            args['cards'] = Collection.objects.get(id=user_id).collectionlist.all()
-        except ObjectDoesNotExist:
-            args['cards'] = []
+        args['cards'] = user_profile.get_collection()
     if request.user.id != user_id:
-        args.update(gain_userlist(request.user.id))
+        args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/cardlist.html', args, context)
 
 def add_card(request, list_category, card_id):
@@ -202,15 +187,15 @@ def add_card(request, list_category, card_id):
     card = Card.objects.get(id=card_id)
     if list_category == 'wishlist':
         try:
-            cards = WishList.objects.get(id=request.user.id).wishlist
+            cards = WishList.objects.get(user=request.user).wishlist
         except ObjectDoesNotExist:
-            args['cards'] = []
+            cards = []
         cards.add(card)
     elif list_category == 'collection':
         try:
-            cards = Collection.objects.get(id=request.user.id).collectionlist
+            cards = Collection.objects.get(user=request.user).collectionlist
         except ObjectDoesNotExist:
-            args['cards'] = []
+            cards = []
         cards.add(card)
     return redirect('/index/')
 
@@ -218,10 +203,10 @@ def remove_card(request, list_category, card_id):
     context = RequestContext(request)
     card = Card.objects.get(id=card_id)
     if list_category == 'wishlist':
-        cards = WishList.objects.get(id=request.user.id).wishlist
+        cards = WishList.objects.get(user=request.user).wishlist
         cards.remove(card)
     elif list_category == 'collection':
-        cards = Collection.objects.get(id=request.user.id).collectionlist
+        cards = Collection.objects.get(user=request.user).collectionlist
         cards.remove(card)
     return redirect('/index/')
 
