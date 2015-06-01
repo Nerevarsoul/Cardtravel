@@ -5,6 +5,7 @@ This project was created to help Starbucks card collectors exchange their cards.
 <ul>
 <li>User registration and authorization</li>
 <li>Starbucks cards catalogue (groups and categories)</li>
+<li>User cards gallery and wanted list</li>
 </ul>
 
 <h3>Planned features</h3>
@@ -12,7 +13,7 @@ This project was created to help Starbucks card collectors exchange their cards.
 <li>Private messages between users</li>
 <li>Email confirmation</li>
 <li>Creating and performing an exchange request</li>
-<li>User cards gallery (collection, wanted and for offer)</li>
+<li>User cards for offer list</li>
 </ul>
 
 <h3>Requirements</h3>
