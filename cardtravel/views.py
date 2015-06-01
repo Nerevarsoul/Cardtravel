@@ -46,6 +46,10 @@ def register(request):
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
             profile.save()
+            wishlist = WishList(user=user)
+            wishlist.save()
+            collection = Collection(user=user)
+            collection.save()
             registered = True
         else:
             print user_form.errors, profile_form.errors
@@ -186,16 +190,10 @@ def add_card(request, list_category, card_id):
     context = RequestContext(request)
     card = Card.objects.get(id=card_id)
     if list_category == 'wishlist':
-        try:
-            cards = WishList.objects.get(user=request.user).wishlist
-        except ObjectDoesNotExist:
-            cards = []
+        cards = WishList.objects.get(user=request.user).wishlist
         cards.add(card)
     elif list_category == 'collection':
-        try:
-            cards = Collection.objects.get(user=request.user).collectionlist
-        except ObjectDoesNotExist:
-            cards = []
+        cards = Collection.objects.get(user=request.user).collectionlist
         cards.add(card)
     return redirect('/index/')
 

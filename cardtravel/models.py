@@ -3,27 +3,21 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class UserProfile(models.Model):
-	user = models.OneToOneField(User, related_name="profile")
+    user = models.OneToOneField(User, related_name="profile")
 
-	picture = models.ImageField(upload_to='profile_images', blank=True)
-	adress = models.TextField(blank=True)
+    picture = models.ImageField(upload_to='profile_images', blank=True)
+    adress = models.TextField(blank=True)
 
-	def __unicode__(self):
-		return self.user.username
+    def __unicode__(self):
+    	return self.user.username
 
-	def get_wishlist(self):
-		try:
-			wishlist = self.user.wishlist.wishlist.all()
-		except ObjectDoesNotExist:
-			wishlist = []
-		return wishlist
+    def get_wishlist(self):
+    	wishlist = self.user.wishlist.wishlist.all()
+    	return wishlist
 
-	def get_collection(self):
-		try:
-			collection = self.user.collection.collectionlist.all()
-		except ObjectDoesNotExist:
-			collection = []
-		return collection
+    def get_collection(self):
+    	collection = self.user.collection.collectionlist.all()
+    	return collection
 
 
 class Card(models.Model):
