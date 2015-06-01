@@ -8,15 +8,19 @@ This is project for exchange Starbukcs card.
 </ul>
 
 #planned features
-user messages
-email confirmation letter
-add a exchange cards
+<ul>
+<li>user messages</li>
+<li>email confirmation letter</li>
+<li>add a exchange cards</li>
+</ul>
 
 #Requirements
-Django==1.6.7
-Pillow==2.8.1
-South==1.0.2
-wsgiref==0.1.2
+<ul>
+<li>Django==1.6.7</li>
+<li>Pillow==2.8.1</li>
+<li>South==1.0.2</li>
+<li>wsgiref==0.1.2</li>
+</ul>
 
 #Design
 Twitter Bootstrap  
