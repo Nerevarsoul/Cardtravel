@@ -1,17 +1,18 @@
 # cardtravel
-This is project for exchange Starbukcs card.  
+This project was created to help Starbucks card collectors exchange their cards.
 
 #features
 <ul>
-<li>User registration</li> 
-<li>Cards groups and categories</li>
+<li>User registration and authorization</li>
+<li>Starbucks cards catalogue (groups and categories)</li>
 </ul>
 
 #planned features
 <ul>
-<li>user messages</li>
-<li>email confirmation letter</li>
-<li>add a exchange cards</li>
+<li>Private messages between users</li>
+<li>Email confirmation</li>
+<li>Creating and performing an exchange request</li>
+<li>User cards gallery (collection, wanted and for offer)</li>
 </ul>
 
 #Requirements
@@ -23,4 +24,4 @@ This is project for exchange Starbukcs card.
 </ul>
 
 #Design
-Twitter Bootstrap  
+Twitter Bootstrap 
