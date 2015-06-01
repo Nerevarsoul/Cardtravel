@@ -1,13 +1,13 @@
 # cardtravel
 This project was created to help Starbucks card collectors exchange their cards.
 
-#features
+<h1>Features</h1>
 <ul>
 <li>User registration and authorization</li>
 <li>Starbucks cards catalogue (groups and categories)</li>
 </ul>
 
-#planned features
+#Planned features
 <ul>
 <li>Private messages between users</li>
 <li>Email confirmation</li>
