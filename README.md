@@ -2,8 +2,10 @@
 This is project for exchange Starbukcs card.  
 
 #features
-User registration 
-Cards groups and categories
+<ul>
+<li>User registration</li> 
+<li>Cards groups and categories</li>
+</ul>
 
 #planned features
 user messages
