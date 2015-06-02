@@ -1,13 +1,14 @@
 # -*- coding: UTF-8  -*-
-from django.http import HttpResponse
-from django.shortcuts import render_to_response, redirect
-from django.core.context_processors import csrf
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.paginator import Paginator
-from django.template import RequestContext
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.context_processors import csrf
+from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.template import RequestContext
+from django.shortcuts import render_to_response, redirect
+from django.views.generic.base import TemplateView
+
 
 from cardtravel.forms import UserForm, UserProfileForm, CardForm, EditProfileForm
 from cardtravel.models import UserProfile, Card, WishList, Collection
@@ -27,9 +28,17 @@ def gain_userlist(user):
     return args
 
 
-def index(request):
-	context = RequestContext(request)
-	return render_to_response('cardtravel/index.html', {}, context)
+class IndexPageView(TemplateView):
+    template_name = "cardtravel/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexPageView, self).get_context_data(**kwargs)
+        #context['latest_articles'] = Article.objects.all()[:5]
+        return context
+
+#def index(request):
+	#context = RequestContext(request)
+	#return render_to_response('cardtravel/index.html', {}, context)
 
 def register(request):
     context = RequestContext(request)
@@ -128,7 +137,7 @@ def view_users(request, page_number=1):
     context = RequestContext(request)
     args = {}
     profiles = UserProfile.objects.all()
-    current_page = Paginator(profiles, 5)
+    current_page = Paginator(profiles, 6)
     return render_to_response('cardtravel/users.html', {"profiles": current_page.page(page_number)}, context)
 
 def view_cards(request):

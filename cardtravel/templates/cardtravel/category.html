@@ -4,9 +4,14 @@
 {% block content %}
 	<h2>{{category}}</h2>
 	<h3>{{ cur_category }}</h3>
-	{% for card in cards %}
-		{% include 'cardtravel/card.html' %}
-		<br>
-	{% endfor %}
+	<div class="container">
+    	<div class="row">
+			{% for card in cards %}
+				<div class="col-md-6">
+					{% include 'cardtravel/card_preview.html' %}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 
 {% endblock %}

@@ -1,12 +1,13 @@
 from django.conf.urls import patterns, include, url
 #import cardtravel.views
+from cardtravel.views import IndexPageView
 
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'mysite.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^index/$', 'cardtravel.views.index', name = 'index'),
+    url(r'^index/$', IndexPageView.as_view(), name = 'index'),
 
     url(r'^login/$', 'cardtravel.views.login', name = 'login'),
     url(r'^register/$', 'cardtravel.views.register', name = 'register'),
@@ -15,6 +16,7 @@ urlpatterns = patterns('',
 
     url(r'^profile/(?P<user_id>\d+)/$', 'cardtravel.views.view_profile'),
     url(r'^profile/$', 'cardtravel.views.view_users', name = 'users'),
+    url(r'^profile/page/(\d+)/$', 'cardtravel.views.view_users', name = 'users'),
     url(r'^profile/(?P<user_id>\d+)/(?P<list_category>\w+)/$', 
         'cardtravel.views.view_cardlist'),
 
