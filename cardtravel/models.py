@@ -48,3 +48,17 @@ class Collection(models.Model):
 
 	def __unicode__(self):
 		return self.user.username + "'s collection"
+
+
+class Trade(models.Model):
+	card = models.ForeignKey(Card)
+	condition = models.CharField(max_length=20)
+	description = models.TextField(blank=True)
+	face_picture = models.ImageField(upload_to='trade_images')
+	reverse_picture = models.ImageField(upload_to='trade_images', blank=True)
+	addiction_picture1 = models.ImageField(upload_to='trade_images', blank=True)
+	addiction_picture2 = models.ImageField(upload_to='trade_images', blank=True)
+	addiction_picture3 = models.ImageField(upload_to='trade_images', blank=True)
+
+	def __unicode__(self):
+		return self.card.name + self.condition

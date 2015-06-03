@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from cardtravel.models import UserProfile, Card, WishList, Collection
+from cardtravel.models import UserProfile, Card, WishList, Collection, Trade
 
 
 # Register your models here.
@@ -33,3 +33,4 @@ class UserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Card)
+admin.site.register(Trade)
