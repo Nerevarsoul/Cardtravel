@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -51,6 +53,7 @@ class Collection(models.Model):
 
 
 class Trade(models.Model):
+	user = models.ForeignKey(User)
 	card = models.ForeignKey(Card)
 	condition = models.CharField(max_length=20)
 	description = models.TextField(blank=True)
@@ -59,6 +62,7 @@ class Trade(models.Model):
 	addiction_picture1 = models.ImageField(upload_to='trade_images', blank=True)
 	addiction_picture2 = models.ImageField(upload_to='trade_images', blank=True)
 	addiction_picture3 = models.ImageField(upload_to='trade_images', blank=True)
+	date = models.DateTimeField(auto_now=True, default = datetime.datetime.now())
 
 	def __unicode__(self):
-		return self.card.name + self.condition
+		return self.card.name + ' ' + self.condition

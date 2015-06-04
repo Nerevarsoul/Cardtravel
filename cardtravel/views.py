@@ -11,7 +11,7 @@ from django.views.generic.base import TemplateView
 
 
 from cardtravel.forms import UserForm, UserProfileForm, CardForm, EditProfileForm
-from cardtravel.models import UserProfile, Card, WishList, Collection
+from cardtravel.models import UserProfile, Card, WishList, Collection, Trade
 
 
 def encode(raw_url):
@@ -36,9 +36,6 @@ class IndexPageView(TemplateView):
         #context['latest_articles'] = Article.objects.all()[:5]
         return context
 
-#def index(request):
-	#context = RequestContext(request)
-	#return render_to_response('cardtravel/index.html', {}, context)
 
 def register(request):
     context = RequestContext(request)
@@ -218,3 +215,10 @@ def remove_card(request, list_category, card_id):
     return redirect('/index/')
 
 
+class TradeView(TemplateView):
+    template_name = "cardtravel/trades.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(TradeView, self).get_context_data(**kwargs)
+        context['trades'] = Trade.objects.all()
+        return context

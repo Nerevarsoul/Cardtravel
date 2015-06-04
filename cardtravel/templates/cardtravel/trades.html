@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+		{% for trade in trades %}
+			<div class="col-md-6">
+				<img src="{{trade.face_picture.url}}" height="200">
+				<p><a href="/profile/{{trade.user.id}}/">{{trade.user}}</a></p>
+				<p><a href="/cards/{{trade.card.id}}/">{{trade.card.name}} + ' ' + {{trade.condition}}</a></p>
+				<p>{{trade.date}}</p>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+
+{% endblock %}
