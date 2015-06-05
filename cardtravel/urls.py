@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 #import cardtravel.views
-from cardtravel.views import IndexPageView, TradeView
+from cardtravel.views import IndexPageView, TradesView, TradeView
 
 urlpatterns = patterns('',
     # Examples:
@@ -29,5 +29,6 @@ urlpatterns = patterns('',
     url(r'^remove_card/(?P<list_category>\w+)/(?P<card_id>\d+)/$', 
         'cardtravel.views.remove_card'),
 
-    url(r'^trades/$', TradeView.as_view(), name = 'trades'),
+    url(r'^trades/$', TradesView.as_view(), name = 'trades'),
+    url(r'^trades/(?P<trade_id>\d+)/$', TradeView.as_view()),
 )

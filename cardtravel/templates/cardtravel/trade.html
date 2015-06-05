@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+	<div>
+		<img src="{{trade.face_picture.url}}" height="400">
+		<p><a href="/profile/{{trade.user.id}}/">{{trade.user}}</a></p>
+		<p><a href="/cards/{{trade.card.id}}/">{{trade.card.name}} {{trade.condition}}</a></p>
+		<p>{{trade.date|date:'D d M Y'}}</p>
+		<p>{{trade.description}}</p>
+		{% if trade.reverse_picture %}
+			<img src="{{trade.reverse_picture.url}}" height="400">
+		{% endif %}
+	</div>
+{% endblock %}
+
+	

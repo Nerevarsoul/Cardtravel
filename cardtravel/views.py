@@ -33,7 +33,9 @@ class IndexPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexPageView, self).get_context_data(**kwargs)
-        #context['latest_articles'] = Article.objects.all()[:5]
+        context['users'] = User.objects.all().order_by('-id')[:3]
+        context['trades'] = Trade.objects.all().order_by('-date')[:3]
+        context['cards'] = Card.objects.all().order_by('-id')[:3]
         return context
 
 
@@ -137,6 +139,7 @@ def view_users(request, page_number=1):
     current_page = Paginator(profiles, 6)
     return render_to_response('cardtravel/users.html', {"profiles": current_page.page(page_number)}, context)
 
+
 def view_cards(request):
     context = RequestContext(request)
     args = {}
@@ -215,10 +218,18 @@ def remove_card(request, list_category, card_id):
     return redirect('/index/')
 
 
-class TradeView(TemplateView):
+class TradesView(TemplateView):
     template_name = "cardtravel/trades.html"
 
     def get_context_data(self, **kwargs):
-        context = super(TradeView, self).get_context_data(**kwargs)
+        context = super(TradesView, self).get_context_data(**kwargs)
         context['trades'] = Trade.objects.all()
+        return context
+
+class TradeView(TemplateView):
+    template_name = "cardtravel/trade.html"
+
+    def get_context_data(self, trade_id, **kwargs):
+        context = super(TradeView, self).get_context_data(**kwargs)
+        context['trade'] = Trade.objects.get(id=trade_id)
         return context
