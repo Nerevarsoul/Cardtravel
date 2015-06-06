@@ -53,11 +53,8 @@
             <p>Communicate with interesting people from around the world.</p>
             <p><a href="#">Communicate</a></p>
             <div>
-                {% for user1 in users %}
-                    <img src="{{user1.profile.picture.url}}">
-                    <p><a href="/profile/{{user1.id}}/">{{ user1.username}}</a></p>
-                    <p>{{ user1.get_full_name }}</p>
-                     <br>  
+                {% for profile in profiles %}
+                    {% include 'cardtravel/preview/users.html' %}  
                 {% endfor %}
             </div>
           </div>
@@ -67,7 +64,7 @@
             <p><a href="#">See catalog</a></p>
             <div>
                 {% for card in cards %}
-                    {% include 'cardtravel/card_preview.html' %}
+                    {% include 'cardtravel/preview/cards.html' %}
                 {% endfor %}
             </div>
           </div>
@@ -77,10 +74,7 @@
             <p><a href="#">Exchange</a></p>
             <div>
                 {% for trade in trades %}
-                    <img src="{{trade.face_picture.url}}" height="200">
-                    <p><a href="/profile/{{trade.user.id}}/">{{trade.user}}</a></p>
-                    <p><a href="/cards/{{trade.card.id}}/">{{trade.card.name}} {{trade.condition}}</a></p>
-                    <p>{{trade.date|date:'D d M Y'}}</p>
+                    {% include 'cardtravel/preview/trades.html' %}
                 {% endfor %}
             </div>
           </div>

@@ -11,10 +11,7 @@
         <div class="row">
         	{% for profile in profiles %}
                 <div class="col-md-4">
-                    <img src="{{profile.picture.url}}">
-                    <p><a href="/profile/{{profile.user.id}}/">{{ profile.user.username}}</a></p>
-                    <p>{{ profile.user.get_full_name }}</p>
-                    <br>  
+                    {% include 'cardtravel/preview/users.html' %}
                 </div>
         	{% endfor %}
         </div>

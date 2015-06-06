@@ -33,7 +33,7 @@ class IndexPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexPageView, self).get_context_data(**kwargs)
-        context['users'] = User.objects.all().order_by('-id')[:3]
+        context['profiles'] = UserProfile.objects.all().order_by('-id')[:3]
         context['trades'] = Trade.objects.all().order_by('-date')[:3]
         context['cards'] = Card.objects.all().order_by('-id')[:3]
         return context
