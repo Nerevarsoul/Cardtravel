@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+    <div>
+        <form action="/trades/add/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ trade_form.as_p }}
+            
+            <input type="submit" value="Change">
+        </form>
+    </div>
+{% endblock %}

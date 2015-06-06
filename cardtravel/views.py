@@ -8,9 +8,11 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView
+from django.utils.decorators import method_decorator
 
 
-from cardtravel.forms import UserForm, UserProfileForm, CardForm, EditProfileForm
+from cardtravel.forms import UserForm, UserProfileForm, CardForm, EditProfileForm, TradeForm
 from cardtravel.models import UserProfile, Card, WishList, Collection, Trade
 
 
@@ -225,7 +227,7 @@ class TradesView(TemplateView):
     def get_context_data(self, page_number=1, **kwargs):
         context = super(TradesView, self).get_context_data(**kwargs)
         trades = Trade.objects.all()
-        current_page = Paginator(trades, 4)
+        current_page = Paginator(trades, 6)
         context['trades'] = current_page.page(page_number)
         return context
 
@@ -236,3 +238,20 @@ class TradeView(TemplateView):
         context = super(TradeView, self).get_context_data(**kwargs)
         context['trade'] = Trade.objects.get(id=trade_id)
         return context
+
+class AddTradeView(FormView):
+    form_class = TradeForm
+    template_name = "cardtravel/add_trade.html"
+    success_url = '/index/'
+
+    def get(self, request, *args, **kwargs):
+        context = super(AddTradeView, self).get_context_data(**kwargs)
+        context.update(csrf(request))
+        context['trade_form'] = self.form_class(initial={'user': self.request.user})
+        return render_to_response(self.template_name, context)
+
+    def form_valid(self, trade_form):
+        trade = trade_form
+        trade.save()
+        return super(AddTradeView, self).form_valid(trade_form)
+      

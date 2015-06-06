@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from cardtravel.models import UserProfile, Card
+from cardtravel.models import UserProfile, Card, Trade
 
 class UserForm(forms.ModelForm):
 	password = forms.CharField(widget=forms.PasswordInput())
@@ -25,5 +25,14 @@ class EditProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
 		fields = ('picture', 'adress')
+
+class TradeForm(forms.ModelForm):
+	user = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput())
+
+	class Meta:
+		model = Trade
+		fields = ('user', 'card', 'condition', 'description', 'face_picture', 
+			      'reverse_picture', 'addiction_picture1', 
+			      'addiction_picture2', 'addiction_picture3')
 
 
