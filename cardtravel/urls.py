@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 
-from cardtravel.views import IndexPageView, TradesView, TradeView, AddTradeView
+from cardtravel.views import IndexPageView
+from cardtravel.views import TradesView, TradeView, AddTradeView, TradeListView
 
 urlpatterns = patterns('',
 
@@ -14,9 +15,10 @@ urlpatterns = patterns('',
     url(r'^profile/(?P<user_id>\d+)/$', 'cardtravel.views.view_profile'),
     url(r'^profile/$', 'cardtravel.views.view_users', name = 'users'),
     url(r'^profile/page/(\d+)/$', 'cardtravel.views.view_users', name = 'users'),
+    
     url(r'^profile/(?P<user_id>\d+)/(?P<list_category>\w+)/$', 
         'cardtravel.views.view_cardlist'),
-
+    
     url(r'^cards/$', 'cardtravel.views.view_cards', name = 'cards'),
     url(r'^cards/page/(\d+)/$', 'cardtravel.views.view_cards', name = 'cards'),
     url(r'^cards/(?P<card_id>\d+)/$', 'cardtravel.views.view_card'),
@@ -31,4 +33,5 @@ urlpatterns = patterns('',
     url(r'^trades/page/(?P<page_number>\d+)/$', TradesView.as_view(), name = 'trades'),
     url(r'^trades/(?P<trade_id>\d+)/$', TradeView.as_view()),
     url(r'^trades/add/$', AddTradeView.as_view(), name = 'add_trade'),
+    url(r'^tradelist/(?P<user_id>\d+)/$', TradeListView.as_view()),
 )

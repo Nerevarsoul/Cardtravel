@@ -3,13 +3,13 @@
 
 {% block content %}
 	
-<p><strong>{{users.username}} {{list_category}}:</strong></p>
+<p><strong>{{users.username}} tradelist:</strong></p>
 
 <div class="container">
     <div class="row">
-		{% for card in cards %}
+		{% for trade in trades %}
 			<div class="col-md-6">
-			{% include 'cardtravel/preview/cards.html' %}
+			{% include 'cardtravel/preview/trades.html' %}
 			</div>
 		{% endfor %}
 	</div>

@@ -23,10 +23,11 @@ def decode(cooked_url):
     return cooked_url.replace('_', ' ')
 
 def gain_userlist(user):
-    user_profile = UserProfile.objects.get(user=user)
     args = {}
-    args['user_wishlist'] = user_profile.get_wishlist()
-    args['user_collection'] = user_profile.get_collection()
+    if user.is_authenticated():
+        user_profile = UserProfile.objects.get(user=user)
+        args['user_wishlist'] = user_profile.get_wishlist()
+        args['user_collection'] = user_profile.get_collection()
     return args
 
 
@@ -38,6 +39,7 @@ class IndexPageView(TemplateView):
         context['profiles'] = UserProfile.objects.all().order_by('-id')[:3]
         context['trades'] = Trade.objects.all().order_by('-date')[:3]
         context['cards'] = Card.objects.all().order_by('-id')[:3]
+        context.update(gain_userlist(self.request.user))
         return context
 
 
@@ -131,6 +133,7 @@ def view_profile(request, user_id):
 
     args['wishlist'] = args['wishlist'][0:3]
     args['collection'] = args['collection'][0:3]
+    args['trades'] = Trade.objects.filter(user=user_id)
 
     return render_to_response('cardtravel/profile.html', args, context)
 
@@ -229,6 +232,16 @@ class TradesView(TemplateView):
         trades = Trade.objects.all()
         current_page = Paginator(trades, 6)
         context['trades'] = current_page.page(page_number)
+        return context
+
+class TradeListView(TemplateView):
+    template_name = "cardtravel/tradelist.html"
+
+    def get_context_data(self, user_id, **kwargs):
+        context = super(TradeListView, self).get_context_data(**kwargs)
+        context['trades'] = Trade.objects.filter(user=user_id)
+        #current_page = Paginator(trades, 6)
+        #context['trades'] = current_page.page(page_number)
         return context
 
 class TradeView(TemplateView):

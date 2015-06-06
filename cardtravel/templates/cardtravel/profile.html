@@ -16,17 +16,24 @@
 	{% endif %}
 	<br>
 	<div class="row">
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 			<p><strong>{{users.username}} <a href="/profile/{{users.id}}/wishlist/">wishlist</a>:</strong></p>
 			{% for card in wishlist %}
-				{% include 'cardtravel/card.html' %}
+				{% include 'cardtravel/preview/cards.html' %}
 				<br>
 			{% endfor %}
 		</div>
-		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 			<p><strong>{{users.username}} <a href="/profile/{{users.id}}/collection/">collectionlist</a>:</strong></p>
 			{% for card in collection %}
-				{% include 'cardtravel/card.html' %}
+				{% include 'cardtravel/preview/cards.html' %}
+				<br>
+			{% endfor %}
+		</div>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<p><strong>{{users.username}} <a href="/tradelist/{{users.id}}/">tradelist</a>:</strong></p>
+			{% for trade in trades %}
+				{% include 'cardtravel/preview/trades.html' %}
 				<br>
 			{% endfor %}
 		</div>

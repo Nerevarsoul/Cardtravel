@@ -103,3 +103,5 @@ MEDIA_URL = '/media/'
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 INTERNAL_IPS = '127.0.0.1'
+
+LOGIN_URL = '/login/'
