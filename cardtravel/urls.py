@@ -1,11 +1,8 @@
 from django.conf.urls import patterns, include, url
-#import cardtravel.views
+
 from cardtravel.views import IndexPageView, TradesView, TradeView
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'mysite.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
 
     url(r'^index/$', IndexPageView.as_view(), name = 'index'),
 
@@ -21,6 +18,7 @@ urlpatterns = patterns('',
         'cardtravel.views.view_cardlist'),
 
     url(r'^cards/$', 'cardtravel.views.view_cards', name = 'cards'),
+    url(r'^cards/page/(\d+)/$', 'cardtravel.views.view_cards', name = 'cards'),
     url(r'^cards/(?P<card_id>\d+)/$', 'cardtravel.views.view_card'),
     url(r'^cards/(?P<category>\w+)/(?P<category_url>\w+)/$', 
         'cardtravel.views.view_categories'),
@@ -30,5 +28,6 @@ urlpatterns = patterns('',
         'cardtravel.views.remove_card'),
 
     url(r'^trades/$', TradesView.as_view(), name = 'trades'),
+    url(r'^trades/page/(?P<page_number>\d+)/$', TradesView.as_view(), name = 'trades'),
     url(r'^trades/(?P<trade_id>\d+)/$', TradeView.as_view()),
 )
