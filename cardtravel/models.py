@@ -53,16 +53,24 @@ class Collection(models.Model):
 
 
 class Trade(models.Model):
-	user = models.ForeignKey(User)
-	card = models.ForeignKey(Card)
-	condition = models.CharField(max_length=20)
-	description = models.TextField(blank=True)
-	face_picture = models.ImageField(upload_to='trade_images')
-	reverse_picture = models.ImageField(upload_to='trade_images', blank=True)
-	addiction_picture1 = models.ImageField(upload_to='trade_images', blank=True)
-	addiction_picture2 = models.ImageField(upload_to='trade_images', blank=True)
-	addiction_picture3 = models.ImageField(upload_to='trade_images', blank=True)
-	date = models.DateTimeField(auto_now=True, default = datetime.datetime.now())
 
-	def __unicode__(self):
-		return self.card.name + ' ' + self.condition
+    CONDITION = (
+    	('mint', ('mint')), 
+    	('mint+', ('mint+')), 
+    	('mint--', ('mint--')), 
+    	('mint-', ('mint-')),
+    )
+
+    user = models.ForeignKey(User)
+    card = models.ForeignKey(Card)
+    condition = models.CharField(choices=CONDITION, max_length=20)
+    description = models.TextField(blank=True, null=True)
+    face_picture = models.ImageField(upload_to='trade_images')
+    reverse_picture = models.ImageField(upload_to='trade_images', blank=True, null=True, default=None)
+    addiction_picture1 = models.ImageField(upload_to='trade_images', blank=True, null=True, default=None)
+    addiction_picture2 = models.ImageField(upload_to='trade_images', blank=True, null=True, default=None)
+    addiction_picture3 = models.ImageField(upload_to='trade_images', blank=True, null=True, default=None)
+    date = models.DateTimeField(auto_now=True, default = datetime.datetime.now())
+
+    def __unicode__(self):
+	    return self.card.name + ' ' + self.condition

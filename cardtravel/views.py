@@ -252,19 +252,69 @@ class TradeView(TemplateView):
         context['trade'] = Trade.objects.get(id=trade_id)
         return context
 
-class AddTradeView(FormView):
-    form_class = TradeForm
-    template_name = "cardtravel/add_trade.html"
-    success_url = '/index/'
+@login_required
+def add_trade(request):
+    context = RequestContext(request)
+    if request.POST:
+        trade_form = TradeForm(request.POST, request.FILES)
+        if trade_form.is_valid():
+            trade = trade_form
+            if 'face_picture' in request.FILES:
+                trade.face_picture = request.FILES['face_picture']
+            if 'reverse_picture' in request.FILES:
+                trade.reverse_picture = request.FILES['reverse_picture']
+            if 'addiction_picture1' in request.FILES:
+                trade.addiction_picture1 = request.FILES['addiction_picture1']
+            if 'addiction_picture2' in request.FILES:
+                trade.addiction_picture2 = request.FILES['addiction_picture2']
+            if 'addiction_picture3' in request.FILES:
+                trade.addiction_picture3 = request.FILES['addiction_picture3']
+            trade.save()
+        else:
+            trade_form.errors
+    else:
+        trade_form = TradeForm(initial={'user': request.user})
+                                             
+    return render_to_response('cardtravel/add_trade.html', 
+        {'trade_form': trade_form}, context)
 
-    def get(self, request, *args, **kwargs):
-        context = super(AddTradeView, self).get_context_data(**kwargs)
-        context.update(csrf(request))
-        context['trade_form'] = self.form_class(initial={'user': self.request.user})
-        return render_to_response(self.template_name, context)
+#class AddTradeView(FormView):
+    #form_class = TradeForm
+    #template_name = "cardtravel/add_trade.html"
+    #success_url = '/index/'
 
-    def form_valid(self, trade_form):
-        trade = trade_form
-        trade.save()
-        return super(AddTradeView, self).form_valid(trade_form)
+    #@method_decorator(login_required)
+    #def get_context_data(self, **kwargs):
+        #context = super(AddTradeView, self).get_context_data(**kwargs)
+        #context.update(csrf(self.request))
+        #context['trade_form'] = self.form_class(initial={'user': self.request.user})
+        #return context
+
+    #@method_decorator(login_required)
+    #def post(self, request, **kwargs):
+        #trade_form = self.form_class(request.POST)
+        #context = super(AddTradeView, self).get_context_data(**kwargs)
+        #context.update(csrf(self.request))
+        #context['trade_form'] = trade_form
+        #if trade_form.is_valid():
+            #return self.form_valid(trade_form)
+        #else:
+            #return render_to_response(self.template_name, context)
+    
+    #@method_decorator(login_required)
+    #def form_valid(self, trade_form):
+        #context = super(AddTradeView, self).get_context_data(**kwargs)
+        #trade = trade_form
+        #trade.save()
+        #return super(AddTradeView, self).form_valid(trade_form)
       
+def page403(request):
+    return render(request, '403.html', {}, status=403)
+
+
+def page404(request):
+    return render(request, '404.html', {}, status=404)
+
+
+def page500(request):
+    return render(request, '500.html', {}, status=500)

@@ -4,11 +4,11 @@
 
 {% block content %}
     <div>
-        <form action="/trades/add/" method="post" enctype="multipart/form-data">
+        <form enctype="multipart/form-data" action="/trades/add/" method="post">
             {% csrf_token %}
             {{ trade_form.as_p }}
             
-            <input type="submit" value="Change">
+            <input type="submit" value="Add new trade"/>
         </form>
     </div>
 {% endblock %}

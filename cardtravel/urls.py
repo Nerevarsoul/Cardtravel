@@ -1,7 +1,8 @@
 from django.conf.urls import patterns, include, url
 
+from cardtravel import views
 from cardtravel.views import IndexPageView
-from cardtravel.views import TradesView, TradeView, AddTradeView, TradeListView
+from cardtravel.views import TradesView, TradeView, TradeListView
 
 urlpatterns = patterns('',
 
@@ -32,6 +33,10 @@ urlpatterns = patterns('',
     url(r'^trades/$', TradesView.as_view(), name = 'trades'),
     url(r'^trades/page/(?P<page_number>\d+)/$', TradesView.as_view(), name = 'trades'),
     url(r'^trades/(?P<trade_id>\d+)/$', TradeView.as_view()),
-    url(r'^trades/add/$', AddTradeView.as_view(), name = 'add_trade'),
+    url(r'^trades/add/$', 'cardtravel.views.add_trade', name = 'add_trade'),
     url(r'^tradelist/(?P<user_id>\d+)/$', TradeListView.as_view()),
 )
+
+handler404 = views.page404
+handler403 = views.page403
+handler500 = views.page500
