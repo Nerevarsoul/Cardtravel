@@ -6,14 +6,15 @@ This project was created to help Starbucks card collectors exchange their cards.
 <li>User registration and authorization</li>
 <li>Starbucks cards catalogue (groups and categories)</li>
 <li>User cards gallery and wanted list</li>
+<li>User cards for offer list</li>
+<li>Creating an exchange request</li>
 </ul>
 
 <h3>Planned features</h3>
 <ul>
 <li>Private messages between users</li>
 <li>Email confirmation</li>
-<li>Creating and performing an exchange request</li>
-<li>User cards for offer list</li>
+<li>Performing an exchange request</li>
 </ul>
 
 <h3>Requirements</h3>
