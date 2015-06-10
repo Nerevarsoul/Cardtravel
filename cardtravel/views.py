@@ -278,6 +278,48 @@ def add_trade(request):
     return render_to_response('cardtravel/add_trade.html', 
         {'trade_form': trade_form}, context)
 
+@login_required
+def edit_trade(request, trade_id):
+    context = RequestContext(request)
+    trade = Trade.objects.get(id=trade_id)
+    context['trade'] = trade
+    if request.POST:
+        trade_form = TradeForm(request.POST, request.FILES)
+        if trade_form.is_valid() and trade_form.has_changed():
+            card_id = request.POST['card']
+            trade.card = Card.objects.get(id=card_id)
+            trade.condition = request.POST['condition']
+            trade.description = request.POST['description']
+            if 'face_picture' in request.FILES:
+                trade.face_picture = request.FILES['face_picture']
+            if 'reverse_picture' in request.FILES:
+                trade.reverse_picture = request.FILES['reverse_picture']
+            if 'addiction_picture1' in request.FILES:
+                trade.addiction_picture1 = request.FILES['addiction_picture1']
+            if 'addiction_picture2' in request.FILES:
+                trade.addiction_picture2 = request.FILES['addiction_picture2']
+            if 'addiction_picture3' in request.FILES:
+                trade.addiction_picture3 = request.FILES['addiction_picture3']
+            trade.save()
+        else:
+            trade_form.errors
+    else:
+        trade_form = TradeForm(initial={'user': trade.user,
+                                        'card': trade.card,
+                                        'condition': trade.condition,
+                                        'description': trade.description,
+                                        'face_picture': trade.face_picture,
+                                        'reverse_picture': trade.reverse_picture, 
+                                        'addiction_picture1': trade.addiction_picture1, 
+                                        'addiction_picture2': trade.addiction_picture2, 
+                                        'addiction_picture3': trade.addiction_picture3})
+    return render_to_response('cardtravel/edit_trade.html', 
+        {'trade_form': trade_form}, context)
+
+@login_required
+def response_trade(request):
+    pass
+
 #class AddTradeView(FormView):
     #form_class = TradeForm
     #template_name = "cardtravel/add_trade.html"

@@ -11,6 +11,11 @@
 		{% if trade.reverse_picture %}
 			<img src="{{trade.reverse_picture.url}}" height="400">
 		{% endif %}
+		{% if user.id == trade.user.id %}
+			<a href="/trades/edit/{{trade.id}}/">Edit your trade</a>
+		{% else %}
+			<a href="/trades/response/{{trade.id}}/">Response trade</a>
+		{% endif %}
 	</div>
 {% endblock %}
 

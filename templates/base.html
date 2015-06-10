@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head lang="en">
+        <meta name="description" content="Exchange Starbucks cards">
+        <meta name="keywords" content="Starbucks, cards, exchange">
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,8 +45,10 @@
                             <a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href = "#">Trades <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href={% url "trades" %}>List Trades</a></li>
-                                <li><a href={% url "add_trade" %}>Add Trade</a></li>
-                                <li><a href="/tradelist/{{users.id}}/">My Trade</a></li>
+                                {% if user.is_authenticated %}
+                                    <li><a href={% url "add_trade" %}>Add Trade</a></li>
+                                    <li><a href="/tradelist/{{user.id}}/">My Trade</a></li>
+                                {% endif %}
                             </ul>
                         </li>
                         {% if user.is_authenticated %}

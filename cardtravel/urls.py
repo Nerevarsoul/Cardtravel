@@ -16,7 +16,6 @@ urlpatterns = patterns('',
     url(r'^profile/(?P<user_id>\d+)/$', 'cardtravel.views.view_profile'),
     url(r'^profile/$', 'cardtravel.views.view_users', name = 'users'),
     url(r'^profile/page/(\d+)/$', 'cardtravel.views.view_users', name = 'users'),
-    
     url(r'^profile/(?P<user_id>\d+)/(?P<list_category>\w+)/$', 
         'cardtravel.views.view_cardlist'),
     
@@ -35,6 +34,8 @@ urlpatterns = patterns('',
     url(r'^trades/(?P<trade_id>\d+)/$', TradeView.as_view()),
     url(r'^trades/add/$', 'cardtravel.views.add_trade', name = 'add_trade'),
     url(r'^tradelist/(?P<user_id>\d+)/$', TradeListView.as_view()),
+    url(r'^trades/edit/(?P<trade_id>\d+)/$', 'cardtravel.views.edit_trade'),
+    url(r'^trades/response/(?P<trade_id>\d+)/$', 'cardtravel.views.response_trade'),
 )
 
 handler404 = views.page404
