@@ -1,5 +1,5 @@
 .jumbotron {
-  background-image: url(http://upload.wikimedia.org/wikipedia/commons/2/29/Starbucks_Stuttgart,_Germany.JPG);
+  background-image: url(/static/img/starbucks_index.jpg);
   height: 500px;
   background-repeat: no-repeat;
   background-size: cover;
@@ -51,3 +51,5 @@
     margin-bottom: 13px;
     font-size: 15px;
 }
+
+/* http://upload.wikimedia.org/wikipedia/commons/2/29/Starbucks_Stuttgart,_Germany.JPG */

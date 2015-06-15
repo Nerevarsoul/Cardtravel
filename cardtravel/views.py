@@ -240,6 +240,7 @@ class TradeListView(TemplateView):
     def get_context_data(self, user_id, **kwargs):
         context = super(TradeListView, self).get_context_data(**kwargs)
         context['trades'] = Trade.objects.filter(user=user_id)
+        context['current_user'] = User.objects.get(id=user_id)
         #current_page = Paginator(trades, 6)
         #context['trades'] = current_page.page(page_number)
         return context
