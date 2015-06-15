@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load pagination_tags %}
 
 {% block content %}
 <div class="container">
     <div class="row">
+        {% autopaginate cards 8 %}
 		{% for card in cards %}
 			<div class="col-md-6">
 				{% include 'cardtravel/preview/cards.html' %}
@@ -12,26 +14,6 @@
 	</div>
 </div>
 
-<div class="row">
-    <ul class="pagination">
-        {% if cards.has_previous %}
-            <li class="arrow"><a href="/cards/page/{{ cards.previous_page_number }}/">&laquo;</a></li>
-        {% else %}
-            <li class="arrow unavailable"><a href="">&laquo;</a></li>
-        {% endif %}
-        {% for page in cards.paginator.page_range %}
-            {% if page == cards.number %}
-                <li><a href="/cards/page/{{ page }}/" class="btn btn-primary active">{{ page }}</a></li>
-            {% else %}
-                <li><a href="/cards/page/{{ page }}/" class="btn btn-default">{{ page }}</a></li>
-            {% endif %}
-        {% endfor %}
-        {% if cards.has_next %}
-            <li class="arrow"><a href="/cards/page/{{ cards.next_page_number }}/">&raquo;</a></li>
-        {% else %}
-            <li class="arrow unavailable"><a href="">&raquo;</a></li>
-        {% endif %}
-    </ul>
-</div>
+{% paginate %}
 
 {% endblock %}

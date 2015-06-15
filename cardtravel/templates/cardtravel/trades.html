@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load pagination_tags %}
 
 {% block content %}
 <div class="container">
     <div class="row">
+        {% autopaginate trades 6 %}
 		{% for trade in trades %}
 			<div class="col-md-6">
 				{% include 'cardtravel/preview/trades.html' %}
@@ -12,26 +14,6 @@
 	</div>
 </div>
 
-<div class="row">
-    <ul class="pagination">
-        {% if trades.has_previous %}
-            <li class="arrow"><a href="/trades/page/{{ trades.previous_page_number }}/">&laquo;</a></li>
-        {% else %}
-            <li class="arrow unavailable"><a href="">&laquo;</a></li>
-        {% endif %}
-        {% for page in trades.paginator.page_range %}
-            {% if page == trades.number %}
-                <li><a href="/trades/page/{{ page }}/" class="btn btn-primary active">{{ page }}</a></li>
-            {% else %}
-                <li><a href="/trades/page/{{ page }}/" class="btn btn-default">{{ page }}</a></li>
-            {% endif %}
-        {% endfor %}
-        {% if trades.has_next %}
-            <li class="arrow"><a href="/trades/page/{{ trades.next_page_number }}/">&raquo;</a></li>
-        {% else %}
-            <li class="arrow unavailable"><a href="">&raquo;</a></li>
-        {% endif %}
-    </ul>
-</div>
+{% paginate %}
 
 {% endblock %}

@@ -137,15 +137,14 @@ def view_profile(request, user_id):
 
     return render_to_response('cardtravel/profile.html', args, context)
 
-def view_users(request, page_number=1):
+def view_users(request):
     context = RequestContext(request)
     args = {}
-    profiles = UserProfile.objects.all()
-    current_page = Paginator(profiles, 6)
-    return render_to_response('cardtravel/users.html', {"profiles": current_page.page(page_number)}, context)
+    args['profiles'] = UserProfile.objects.all()
+    return render_to_response('cardtravel/users.html', args, context)
 
 
-def view_cards(request, page_number=1):
+def view_cards(request):
     context = RequestContext(request)
     args = {}
     cards = Card.objects.all()
@@ -153,8 +152,7 @@ def view_cards(request, page_number=1):
         card.country_url = encode(card.country)
         card.series_url = encode(card.series)
     args.update(gain_userlist(request.user))
-    current_page = Paginator(cards, 6)
-    args["cards"] = current_page.page(page_number)
+    args["cards"] = cards
     return render_to_response('cardtravel/cards.html', args, context)
 
 def view_card(request, card_id):
@@ -227,11 +225,9 @@ def remove_card(request, list_category, card_id):
 class TradesView(TemplateView):
     template_name = "cardtravel/trades.html"
 
-    def get_context_data(self, page_number=1, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(TradesView, self).get_context_data(**kwargs)
-        trades = Trade.objects.all()
-        current_page = Paginator(trades, 6)
-        context['trades'] = current_page.page(page_number)
+        context['trades'] = Trade.objects.all()
         return context
 
 class TradeListView(TemplateView):

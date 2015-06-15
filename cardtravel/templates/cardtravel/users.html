@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load pagination_tags %}
 
 {% block content %}
 
@@ -9,6 +10,7 @@
 
     <div class="container">
         <div class="row">
+            {% autopaginate profiles 6 %}
         	{% for profile in profiles %}
                 <div class="col-md-4">
                     {% include 'cardtravel/preview/users.html' %}
@@ -17,8 +19,11 @@
         </div>
     </div>
 
+    {% paginate %}
 
-	<div class="row">
+{% endblock %}
+
+<!--<div class="row">
         <ul class="pagination">
             {% if profiles.has_previous %}
                 <li class="arrow"><a href="/profile/page/{{ profiles.previous_page_number }}/">&laquo;</a></li>
@@ -38,6 +43,5 @@
                 <li class="arrow unavailable"><a href="">&raquo;</a></li>
             {% endif %}
         </ul>
-    </div>
+    </div> -->
 
-{% endblock %}
