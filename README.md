@@ -25,6 +25,7 @@ This project was created to help Starbucks card collectors exchange their cards.
 <li>django-debug-toolbar==1.3.0</li>
 <li>sqlparse==0.1.15</li>
 <li>wsgiref==0.1.2</li>
+<li>django-pagination==1.0.7</li>
 </ul>
 
 <h3>Design</h3>
