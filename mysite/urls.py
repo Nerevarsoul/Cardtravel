@@ -11,6 +11,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('cardtravel.urls')),
+    url(r'^messages/', include('postman.urls')),
 )
 
 if settings.DEBUG:

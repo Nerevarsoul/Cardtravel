@@ -16,10 +16,7 @@ from cardtravel.forms import UserForm, UserProfileForm, CardForm, EditProfileFor
 from cardtravel.models import UserProfile, Card, WishList, Collection, Trade
 
 
-def encode(raw_url):
-    return raw_url.replace(' ', '_')
-
-def decode(cooked_url):
+def decode_url(cooked_url):
     return cooked_url.replace('_', ' ')
 
 def gain_userlist(user):
@@ -36,12 +33,11 @@ class IndexPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexPageView, self).get_context_data(**kwargs)
-        context['profiles'] = UserProfile.objects.all().order_by('-id')[:3]
-        context['trades'] = Trade.objects.all().order_by('-date')[:3]
-        cards = Card.objects.all().order_by('-id')[:3]
+        context['profiles'] = UserProfile.objects.order_by('-id')[:3]
+        context['trades'] = Trade.objects.order_by('-date')[:3]
+        cards = Card.objects.order_by('-id')[:3]
         for card in cards:
-            card.country_url = encode(card.country)
-            card.series_url = encode(card.series)
+            card.get_url()
         context['cards'] = cards
         context.update(gain_userlist(self.request.user))
         return context
@@ -70,10 +66,10 @@ def register(request):
         else:
             print user_form.errors, profile_form.errors
     else:
-    	user_form = UserForm()
+        user_form = UserForm()
         profile_form = UserProfileForm()
     return render_to_response('cardtravel/register.html', {'user_form': user_form, 
-    	'profile_form': profile_form, 'registered': registered}, context)
+        'profile_form': profile_form, 'registered': registered}, context)
 
 @login_required
 def edit_profile(request):
@@ -129,11 +125,9 @@ def view_profile(request, user_id):
     wishlist = user_profile.get_wishlist()
     collection = user_profile.get_collection()
     for card in wishlist:
-        card.country_url = encode(card.country)
-        card.series_url = encode(card.series)
+        card.get_url()
     for card in collection:
-        card.country_url = encode(card.country)
-        card.series_url = encode(card.series)
+        card.get_url()
     if request.user.id != user_id:
         args.update(gain_userlist(request.user))
     else:
@@ -158,8 +152,7 @@ def view_cards(request):
     args = {}
     cards = Card.objects.all()
     for card in cards:
-        card.country_url = encode(card.country)
-        card.series_url = encode(card.series)
+        card.get_url()
     args.update(gain_userlist(request.user))
     args["cards"] = cards
     return render_to_response('cardtravel/cards.html', args, context)
@@ -168,8 +161,7 @@ def view_card(request, card_id):
     context = RequestContext(request)
     args = {}
     card = Card.objects.get(id=card_id)
-    card.country_url = encode(card.country)
-    card.series_url = encode(card.series)
+    card.get_url()
     args["card"] = card
     args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/cardview.html', args, context)
@@ -177,7 +169,7 @@ def view_card(request, card_id):
 def view_categories(request, category, category_url):
     context = RequestContext(request)
     args = {}
-    cur_category = decode(category_url)
+    cur_category = decode_url(category_url)
     args["category"] = category
     args["category_url"] = category_url
     args["cur_category"] = cur_category
@@ -188,8 +180,7 @@ def view_categories(request, category, category_url):
     elif category == 'year':
         cards = Card.objects.filter(issued_on=int(cur_category))
     for card in cards:
-        card.country_url = encode(card.country)
-        card.series_url = encode(card.series)
+        card.get_url()
     args["cards"] = cards
     args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/category.html', args, context)
@@ -205,8 +196,7 @@ def view_cardlist(request, user_id, list_category):
     elif list_category == 'collection':
         cards = user_profile.get_collection()
     for card in cards:
-        card.country_url = encode(card.country)
-        card.series_url = encode(card.series)
+        card.get_url()
     args["cards"] = cards
     if request.user.id != user_id:
         args.update(gain_userlist(request.user))

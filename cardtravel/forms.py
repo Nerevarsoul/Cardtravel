@@ -22,7 +22,7 @@ class UserForm(forms.ModelForm):
 		def clean(self):
 			data = self.cleaned_data
 			if "password" in data and "password2" in data and data["password"] != data["password2"]:
-					raise forms.ValudationError("Passwords must be same")
+					raise forms.ValidationError("Passwords must be same")
         		           
 
 class UserProfileForm(forms.ModelForm):
