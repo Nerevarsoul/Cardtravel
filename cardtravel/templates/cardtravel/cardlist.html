@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load pagination_tags %}
 
 {% block content %}
 	
@@ -7,6 +8,7 @@
 
 <div class="container">
     <div class="row">
+    	{% autopaginate cards %}
 		{% for card in cards %}
 			<div class="col-md-6">
 			{% include 'cardtravel/preview/cards.html' %}
@@ -15,5 +17,6 @@
 	</div>
 </div>
 
+{% paginate %}
 
 {% endblock %}

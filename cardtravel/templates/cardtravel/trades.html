@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        {% autopaginate trades 6 %}
+        {% autopaginate trades%}
 		{% for trade in trades %}
 			<div class="col-md-6">
 				{% include 'cardtravel/preview/trades.html' %}

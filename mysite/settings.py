@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    #https://github.com/ericflo/django-pagination/blob/master/docs/usage.txt
     'pagination',
     'cardtravel',
     'south',
@@ -118,3 +119,13 @@ DEBUG_TOOLBAR_PATCH_SETTINGS = False
 INTERNAL_IPS = '127.0.0.1'
 
 LOGIN_URL = '/login/'
+
+#https://github.com/ericflo/django-pagination/blob/master/docs/usage.txt
+
+PAGINATION_DEFAULT_PAGINATION = 6
+
+PAGINATION_DEFAULT_WINDOW = 3
+
+PAGINATION_DEFAULT_ORPHANS = 5
+
+PAGINATION_INVALID_PAGE_RAISES_404 = True

@@ -38,7 +38,11 @@ class IndexPageView(TemplateView):
         context = super(IndexPageView, self).get_context_data(**kwargs)
         context['profiles'] = UserProfile.objects.all().order_by('-id')[:3]
         context['trades'] = Trade.objects.all().order_by('-date')[:3]
-        context['cards'] = Card.objects.all().order_by('-id')[:3]
+        cards = Card.objects.all().order_by('-id')[:3]
+        for card in cards:
+            card.country_url = encode(card.country)
+            card.series_url = encode(card.series)
+        context['cards'] = cards
         context.update(gain_userlist(self.request.user))
         return context
 
@@ -122,17 +126,22 @@ def view_profile(request, user_id):
     user_profile = UserProfile.objects.get(user=user_id)
     args['profiles'] = user_profile
     args['users'] = User.objects.get(id=user_id)
-    args['wishlist'] = user_profile.get_wishlist()
-    args['collection'] = user_profile.get_collection()
-
+    wishlist = user_profile.get_wishlist()
+    collection = user_profile.get_collection()
+    for card in wishlist:
+        card.country_url = encode(card.country)
+        card.series_url = encode(card.series)
+    for card in collection:
+        card.country_url = encode(card.country)
+        card.series_url = encode(card.series)
     if request.user.id != user_id:
         args.update(gain_userlist(request.user))
     else:
         args['user_wishlist'] = args['wishlist']
         args['user_collection'] = args['collection']
 
-    args['wishlist'] = args['wishlist'][0:3]
-    args['collection'] = args['collection'][0:3]
+    args['wishlist'] = wishlist[0:3]
+    args['collection'] = collection[0:3]
     args['trades'] = Trade.objects.filter(user=user_id)
 
     return render_to_response('cardtravel/profile.html', args, context)
@@ -192,9 +201,13 @@ def view_cardlist(request, user_id, list_category):
     args['users'] = User.objects.get(id=user_id)
     args['list_category'] = list_category
     if list_category == 'wishlist':
-        args['cards'] = user_profile.get_wishlist()
+        cards = user_profile.get_wishlist()
     elif list_category == 'collection':
-        args['cards'] = user_profile.get_collection()
+        cards = user_profile.get_collection()
+    for card in cards:
+        card.country_url = encode(card.country)
+        card.series_url = encode(card.series)
+    args["cards"] = cards
     if request.user.id != user_id:
         args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/cardlist.html', args, context)
@@ -237,8 +250,6 @@ class TradeListView(TemplateView):
         context = super(TradeListView, self).get_context_data(**kwargs)
         context['trades'] = Trade.objects.filter(user=user_id)
         context['current_user'] = User.objects.get(id=user_id)
-        #current_page = Paginator(trades, 6)
-        #context['trades'] = current_page.page(page_number)
         return context
 
 class TradeView(TemplateView):
