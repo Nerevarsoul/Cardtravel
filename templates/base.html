@@ -47,13 +47,13 @@
                                 <li><a href={% url "trades" %}>List Trades</a></li>
                                 {% if user.is_authenticated %}
                                     <li><a href={% url "add_trade" %}>Add Trade</a></li>
-                                    <li><a href="/tradelist/{{user.id}}/">My Trade</a></li>
+                                    <li><a href={% url 'view_tradelist' user.id %}>My Trade</a></li>
                                 {% endif %}
                             </ul>
                         </li>
                         {% if user.is_authenticated %}
                             <li><a href={% url "logout" %}>Logout</a></li>
-                            <li><a href="/profile/{{user.id}}">{{ user.username}}</a></li>
+                            <li><a href={% url 'view_profile' user.id %}>{{ user.username}}</a></li>
                         {% else %}
                             <li><a href={% url "login" %}>Sign in</a></li>
                             <li><a href={% url "register" %}>Sign up</a></li>

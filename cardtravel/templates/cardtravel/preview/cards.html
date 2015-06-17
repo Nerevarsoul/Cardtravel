@@ -1,33 +1,31 @@
 
 <img src="{{card.face_picture.url}}" height="200">
-<h5><a href="/cards/{{card.id}}/">{{ card.name }}</a></h5>
-<p><a href="/cards/country/{{card.country_url}}/">{{ card.country }}</a></p>
-<p><a href="/cards/year/{{card.issued_on}}/">{{ card.issued_on }}</a></p>
+<h5><a href={% url 'view_card' card.id %}>{{ card.name }}</a></h5>
+<p><a href={% url 'view_category' 'country' card.country_url %}>{{ card.country }}</a></p>
+<p><a href={% url 'view_category' 'year' card.issued_on %}>{{ card.issued_on }}</a></p>
 {% if card in user_wishlist %}
-	<form action="/remove_card/wishlist/{{card.id}}/">
+	<form action={% url 'remove_card' 'wishlist' card.id %}>
 		<button type="submit">
 			<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
 		</button>
 	</form>
 {% else %}
-	<form action="/add_card/wishlist/{{card.id}}/">
+	<form action={% url 'add_card' 'wishlist' card.id %}>
 		<button type="submit">
 			<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 		</button>
 	</form>
 {% endif %}
 {% if card in user_collection %}
-	<form action="/remove_card/collection/{{card.id}}/">
+	<form action={% url 'remove_card' 'collection' card.id %}>
 		<button type="submit">
 			<span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
 		</button>
 	</form>
 {% else %}
-	<form action="/add_card/collection/{{card.id}}/">
+	<form action={% url 'add_card' 'collection' card.id %}>
 		<button type="submit">
 			<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
 		</button>
 	</form>
 {% endif %}
-
-	
