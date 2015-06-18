@@ -105,7 +105,7 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect('/index/')
+            return redirect('view_profile', user.id)
         else:
             return HttpResponse("Your Rango account is disabled.")
     else:
@@ -211,7 +211,7 @@ def add_card(request, list_category, card_id):
     elif list_category == 'collection':
         cards = Collection.objects.get(user=request.user).collectionlist
         cards.add(card)
-    return redirect('/index/')
+    return redirect(request.META.get('HTTP_REFERER'))
 
 def remove_card(request, list_category, card_id):
     context = RequestContext(request)
@@ -222,7 +222,7 @@ def remove_card(request, list_category, card_id):
     elif list_category == 'collection':
         cards = Collection.objects.get(user=request.user).collectionlist
         cards.remove(card)
-    return redirect('/index/')
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 class TradesView(TemplateView):
