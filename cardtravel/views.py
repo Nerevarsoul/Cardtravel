@@ -12,8 +12,8 @@ from django.views.generic.edit import FormView
 from django.utils.decorators import method_decorator
 
 
-from cardtravel.forms import UserForm, UserProfileForm, CardForm, EditProfileForm, TradeForm
-from cardtravel.models import UserProfile, Card, WishList, Collection, Trade
+from .forms import UserForm, UserProfileForm, CardForm, EditProfileForm, TradeForm
+from .models import UserProfile, Card, WishList, Collection, Trade
 
 
 def decode_url(cooked_url):

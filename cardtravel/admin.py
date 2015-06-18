@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from cardtravel.models import UserProfile, Card, WishList, Collection, Trade
+from .models import UserProfile, Card, WishList, Collection, Trade
 
 
 # Register your models here.

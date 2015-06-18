@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 
 from cardtravel import views
-from cardtravel.views import IndexPageView
-from cardtravel.views import TradesView, TradeView, TradeListView
+from .views import IndexPageView
+from .views import TradesView, TradeView, TradeListView
 
 urlpatterns = patterns('',
 
@@ -14,14 +14,14 @@ urlpatterns = patterns('',
     url(r'^edit/$', 'cardtravel.views.edit_profile', name = 'edit_profile'),
 
     url(r'^profile/(?P<user_id>\d+)/$', 'cardtravel.views.view_profile', 
-    	name = 'view_profile'),
+        name = 'view_profile'),
     url(r'^profile/$', 'cardtravel.views.view_users', name = 'users'),
     url(r'^profile/(?P<user_id>\d+)/(?P<list_category>\w+)/$', 
         'cardtravel.views.view_cardlist', name = 'view_cardlist'),
     
     url(r'^cards/$', 'cardtravel.views.view_cards', name = 'cards'),
     url(r'^cards/(?P<card_id>\d+)/$', 'cardtravel.views.view_card', 
-    	name = 'view_card'),
+        name = 'view_card'),
     url(r'^cards/(?P<category>\w+)/(?P<category_url>\w+)/$', 
         'cardtravel.views.view_categories', name = 'view_category'),
     url(r'^add_card/(?P<list_category>\w+)/(?P<card_id>\d+)/$', 
@@ -33,11 +33,11 @@ urlpatterns = patterns('',
     url(r'^trades/(?P<trade_id>\d+)/$', TradeView.as_view(), name = 'view_trade'),
     url(r'^trades/add/$', 'cardtravel.views.add_trade', name = 'add_trade'),
     url(r'^tradelist/(?P<user_id>\d+)/$', TradeListView.as_view(), 
-    	name = 'view_tradelist'),
+        name = 'view_tradelist'),
     url(r'^trades/edit/(?P<trade_id>\d+)/$', 'cardtravel.views.edit_trade', 
-    	name = 'edit_trade'),
+        name = 'edit_trade'),
     url(r'^trades/response/(?P<trade_id>\d+)/$', 
-    	'cardtravel.views.response_trade', name = 'response_trade'),
+        'cardtravel.views.response_trade', name = 'response_trade'),
 )
 
 handler404 = views.page404
