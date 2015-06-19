@@ -31,3 +31,15 @@ h1 {
 .nav li {
   display: inline;
 }
+
+.success {
+	background-color: #008800;
+	text-align: center;
+	border-color: #005500;
+}
+
+.deleted {
+	background-color: #880000;
+	text-align: center;
+	border-color: #550000;
+}

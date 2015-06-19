@@ -1,5 +1,7 @@
 # -*- coding: UTF-8  -*-
+from django.conf import settings
 from django.contrib import auth
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.context_processors import csrf
@@ -211,6 +213,7 @@ def add_card(request, list_category, card_id):
     elif list_category == 'collection':
         cards = Collection.objects.get(user=request.user).collectionlist
         cards.add(card)
+    messages.add_message(request, messages.SUCCESS, 'You add card')
     return redirect(request.META.get('HTTP_REFERER'))
 
 def remove_card(request, list_category, card_id):
@@ -222,6 +225,7 @@ def remove_card(request, list_category, card_id):
     elif list_category == 'collection':
         cards = Collection.objects.get(user=request.user).collectionlist
         cards.remove(card)
+    messages.add_message(request, settings.DELETE_MESSAGES, 'You delete card')
     return redirect(request.META.get('HTTP_REFERER'))
 
 
