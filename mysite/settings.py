@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'pagination',
     'cardtravel',
     'south',
+    #http://django-postman.readthedocs.org/en/latest/index.html
     'postman',
 )
 
@@ -66,7 +67,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
-    "django.core.context_processors.request",
+    'django.core.context_processors.request',
+    'postman.context_processors.inbox',
 )   
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
@@ -136,3 +138,21 @@ PAGINATION_DEFAULT_WINDOW = 3
 PAGINATION_DEFAULT_ORPHANS = 5
 
 PAGINATION_INVALID_PAGE_RAISES_404 = True
+
+#http://django-postman.readthedocs.org/en/latest/quickstart.html
+
+POSTMAN_DISALLOW_ANONYMOUS = True  # default is False
+# POSTMAN_DISALLOW_MULTIRECIPIENTS = True  # default is False
+# POSTMAN_DISALLOW_COPIES_ON_REPLY = True  # default is False
+# POSTMAN_DISABLE_USER_EMAILING = True  # default is False
+POSTMAN_AUTO_MODERATE_AS = True  # default is None
+POSTMAN_SHOW_USER_AS = 'get_full_name'  # default is None
+POSTMAN_QUICKREPLY_QUOTE_BODY = True  # default is False
+# POSTMAN_NOTIFIER_APP = None  # default is 'notification'
+# POSTMAN_MAILER_APP = None  # default is 'mailer'
+# POSTMAN_AUTOCOMPLETER_APP = {
+    # 'name': '',  # default is 'ajax_select'
+    # 'field': '',  # default is 'AutoCompleteField'
+    # 'arg_name': '',  # default is 'channel'
+    # 'arg_default': 'postman_friends',  # no default, mandatory to enable the feature
+# }  # default is {}
