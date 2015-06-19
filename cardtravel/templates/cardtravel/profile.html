@@ -13,6 +13,9 @@
 	<img src="{{profiles.picture.url}}">
 	{% if user.id == users.id %}
 		<a href={% url 'edit_profile' %}>Edit your profile</a>
+		<a href={% url 'postman_inbox' %}>View inbox</a>
+	{% else %}
+		<a href={% url 'postman_write' users %}>Write message</a>
 	{% endif %}
 	<br>
 	<div class="row">
