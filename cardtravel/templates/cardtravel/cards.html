@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load pagination_tags %}
+{% load cardtravel_extras %}
 
 {% block content %}
 <div class="container">
@@ -29,7 +30,7 @@
             		<div id="collapseOne" class="panel-collapse collapse">
 					    <ul class="panel-body">
 					        {% for country in countries %}
-								<li>{{country}}</li>
+								<li><a href={% url 'view_category' 'country' country|encode_url %}>{{country}}</a></li>
 							{% endfor %}
 					    </ul>
     				</div>
@@ -46,7 +47,7 @@
             		<div id="collapseTwo" class="panel-collapse collapse">
 					    <ul class="panel-body">
 					        {% for seria in series %}
-								<li>{{seria}}</li>
+								<li><a href={% url 'view_category' 'series' seria|encode_url %}>{{seria}}</a></li>
 							{% endfor %}
 					    </ul>
     				</div>

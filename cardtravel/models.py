@@ -40,10 +40,6 @@ class Card(models.Model):
     def __unicode__(self):
         return self.name
 
-    def get_url(self):
-        self.country_url = encode_url(self.country)
-        self.series_url = encode_url(self.series)
-
 
 class WishList(models.Model):
     user = models.OneToOneField(User)

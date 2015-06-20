@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load cardtravel_extras %}
 
 {% block content %}
 	<div>
 		<h2><a href={% url 'view_card' card.id %}>{{ card.name }}</a></h2>
 		<p><strong>country: </strong>
-			<a href={% url 'view_category' 'country' card.country_url %}>{{ card.country }}</a>
+			<a href={% url 'view_category' 'country' card.country|encode_url %}>{{ card.country }}</a>
 		</p>
 		<p><strong>series: </strong>
-			<a href={% url 'view_category' 'series' card.series_url %}>{{ card.series }}</a>
+			<a href={% url 'view_category' 'series' card.series|encode_url %}>{{ card.series }}</a>
 		</p>
 		<p><strong>catalog_codes: </strong>{{ card.catalog_codes }}</p>
 		<p><strong>issued_on: </strong>

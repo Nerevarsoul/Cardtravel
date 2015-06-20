@@ -38,8 +38,6 @@ class IndexPageView(TemplateView):
         context['profiles'] = UserProfile.objects.order_by('-id')[:3]
         context['trades'] = Trade.objects.order_by('-date')[:3]
         cards = Card.objects.order_by('-id')[:3]
-        for card in cards:
-            card.get_url()
         context['cards'] = cards
         context.update(gain_userlist(self.request.user))
         return context
@@ -126,10 +124,6 @@ def view_profile(request, user_id):
     args['users'] = User.objects.get(id=user_id)
     wishlist = user_profile.get_wishlist()
     collection = user_profile.get_collection()
-    for card in wishlist:
-        card.get_url()
-    for card in collection:
-        card.get_url()
     if request.user.id != user_id:
         args.update(gain_userlist(request.user))
     else:
@@ -157,7 +151,6 @@ def view_cards(request):
     years = []
     cards = Card.objects.all()
     for card in cards:
-        card.get_url()
         if card.country not in countries:
             countries.append(card.country)
         if card.series not in series:
@@ -178,7 +171,6 @@ def view_card(request, card_id):
     context = RequestContext(request)
     args = {}
     card = Card.objects.get(id=card_id)
-    card.get_url()
     args["card"] = card
     args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/cardview.html', args, context)
@@ -196,8 +188,6 @@ def view_categories(request, category, category_url):
         cards = Card.objects.filter(series=cur_category)
     elif category == 'year':
         cards = Card.objects.filter(issued_on=int(cur_category))
-    for card in cards:
-        card.get_url()
     args["cards"] = cards
     args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/category.html', args, context)
@@ -212,8 +202,6 @@ def view_cardlist(request, user_id, list_category):
         cards = user_profile.get_wishlist()
     elif list_category == 'collection':
         cards = user_profile.get_collection()
-    for card in cards:
-        card.get_url()
     args["cards"] = cards
     if request.user.id != user_id:
         args.update(gain_userlist(request.user))
