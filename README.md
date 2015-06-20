@@ -8,13 +8,15 @@ This project was created to help Starbucks card collectors exchange their cards.
 <li>User cards gallery and wanted list</li>
 <li>User cards for offer list</li>
 <li>Creating an exchange request</li>
+<li>Private messages between users</li>
 </ul>
 
 <h3>Planned features</h3>
 <ul>
-<li>Private messages between users</li>
+<li>Settings timezone</li>
 <li>Email confirmation</li>
 <li>Performing an exchange request</li>
+<li>Forum</li>
 </ul>
 
 <h3>Requirements</h3>
@@ -26,6 +28,8 @@ This project was created to help Starbucks card collectors exchange their cards.
 <li>sqlparse==0.1.15</li>
 <li>wsgiref==0.1.2</li>
 <li>django-pagination==1.0.7</li>
+<li>django-postman==3.2.2</li>
+<li>pytz==2015.4</li>
 </ul>
 
 <h3>Design</h3>
