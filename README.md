@@ -17,6 +17,7 @@ This project was created to help Starbucks card collectors exchange their cards.
 <li>Email confirmation</li>
 <li>Performing an exchange request</li>
 <li>Forum</li>
+<li>Search</li>
 </ul>
 
 <h3>Requirements</h3>
