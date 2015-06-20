@@ -4,15 +4,50 @@
 
 {% block content %}
 <div class="container">
-    <div class="row">
-        {% autopaginate cards 8 %}
-		{% for card in cards %}
-			<div class="col-md-6">
-				{% include 'cardtravel/preview/cards.html' %}
+	<div class="row">
+
+			<div class="col-md-10">
+				{% autopaginate cards 8 %}
+				{% for card in cards %}
+					<div class="col-md-6">
+						{% include 'cardtravel/preview/cards.html' %}
+					</div>
+				{% endfor %}
 			</div>
-		{% endfor %}
+
+		<div class="col-md-2">
+
+			<div class="dropdown">
+				<a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href = "#">Countries: <b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					{% for country in countries %}
+						<li>{{country}}</li>
+					{% endfor %}
+				</ul>
+			</div>
+
+			<div class="dropdown">
+				<a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href = "#">Series: <b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					{% for seria in series %}
+						<li>{{seria}}</li>
+					{% endfor %}
+				</ul>
+			</div>
+
+			<div class="dropdown">
+				<a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href = "#">Years: <b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					{% for year in years %}
+						<li><a href={% url 'view_category' 'year' year %}>{{year}}</a></li>
+				{% endfor %}
+				</ul>
+			</div>
+
+		</div>
+
 	</div>
-</div>
+</div>		
 
 {% paginate %}
 

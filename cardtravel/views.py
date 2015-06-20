@@ -152,11 +152,26 @@ def view_users(request):
 def view_cards(request):
     context = RequestContext(request)
     args = {}
+    countries = []
+    series = []
+    years = []
     cards = Card.objects.all()
     for card in cards:
         card.get_url()
+        if card.country not in countries:
+            countries.append(card.country)
+        if card.series not in series:
+            series.append(card.series)
+        if card.issued_on not in years:
+            years.append(card.issued_on)
     args.update(gain_userlist(request.user))
     args["cards"] = cards
+    countries.sort()
+    series.sort()
+    years.sort()
+    args["countries"] = countries
+    args["series"] = series
+    args["years"] = years
     return render_to_response('cardtravel/cards.html', args, context)
 
 def view_card(request, card_id):
