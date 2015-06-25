@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
+from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.utils.decorators import method_decorator
@@ -143,29 +144,61 @@ def view_users(request):
     return render_to_response('cardtravel/users.html', args, context)
 
 
-def view_cards(request):
-    context = RequestContext(request)
-    args = {}
-    countries = []
-    series = []
-    years = []
-    cards = Card.objects.all()
-    for card in cards:
-        if card.country not in countries:
-            countries.append(card.country)
-        if card.series not in series:
-            series.append(card.series)
-        if card.issued_on not in years:
-            years.append(card.issued_on)
-    args.update(gain_userlist(request.user))
-    args["cards"] = cards
-    countries.sort()
-    series.sort()
-    years.sort()
-    args["countries"] = countries
-    args["series"] = series
-    args["years"] = years
-    return render_to_response('cardtravel/cards.html', args, context)
+class CardListMixin(ListView):
+
+    model = Card
+    queryset = Card.objects.all()
+    
+    def get_context_data(self, **kwargs):
+        context = super(CardListMixin, self).get_context_data(**kwargs)
+        cards = self.queryset
+        countries = []
+        series = []
+        years = []
+        for card in cards:
+            if card.country not in countries:
+                countries.append(card.country)
+            if card.series not in series:
+                series.append(card.series)
+            if card.issued_on not in years:
+                years.append(card.issued_on)
+        countries.sort()
+        series.sort()
+        years.sort()
+        context["countries"] = countries
+        context["series"] = series
+        context["years"] = years
+        context['cards'] = cards
+        context.update(gain_userlist(self.request.user))
+        return context
+
+class CardListView(CardListMixin):
+    template_name = 'cardtravel/cards.html'
+
+
+#def view_cards(request):
+    #context = RequestContext(request)
+    #args = {}
+    #countries = []
+    #series = []
+    #years = []
+    #cards = Card.objects.all()
+    #for card in cards:
+        #if card.country not in countries:
+            #countries.append(card.country)
+        #if card.series not in series:
+            #series.append(card.series)
+        #if card.issued_on not in years:
+            #years.append(card.issued_on)
+    #args.update(gain_userlist(request.user))
+    #args["cards"] = cards
+    #countries.sort()
+    #series.sort()
+    #years.sort()
+    #args["countries"] = countries
+    #args["series"] = series
+    #args["years"] = years
+    #return render_to_response('cardtravel/cards.html', args, context)
 
 def view_card(request, card_id):
     context = RequestContext(request)
