@@ -16,7 +16,7 @@
 			<a href={% url 'view_category' 'year' card.issued_on %}>{{ card.issued_on }}</a>
 		</p>
 		<p><strong>description: </strong>{{ card.description }}</p>
-		<img src="{{card.face_picture.url}}" height="200">
+		<img src={{card.face_picture.url}} height="200">
 		{% if card in user_wishlist %}
 			<a href={% url 'remove_card' 'wishlist' card.id %}>Remove card in wishlist</a>
 		{% else %}
@@ -27,6 +27,6 @@
 		{% else %}
 			<a href="/add_card/collection/{{card.id}}/">Add card from collection</a>
 		{% endif %}
-		<img src={% url 'add_card' 'collection' card.id %} height="200">
+		<img src={{card.reverse_picture.url}} height="200">
 	</div>
 {% endblock %}

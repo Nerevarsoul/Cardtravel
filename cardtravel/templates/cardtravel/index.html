@@ -51,7 +51,7 @@
           <div class="col-md-4">
             <h3>Users</h3>
             <p>Communicate with interesting people from around the world.</p>
-            <p><a href="#">Communicate</a></p>
+            <p><a href={% url "users" %}>Communicate</a></p>
             <div>
                 {% for profile in profiles %}
                     {% include 'cardtravel/preview/users.html' %}  
@@ -61,7 +61,7 @@
           <div class="col-md-4">
             <h3>Cards</h3>
             <p>Starbucks card catalog of all divided into categories.</p>
-            <p><a href="#">See catalog</a></p>
+            <p><a href={% url "cards" %}>See catalog</a></p>
             <div>
                 {% for card in cards %}
                     {% include 'cardtravel/preview/cards.html' %}
@@ -71,7 +71,7 @@
           <div class="col-md-4">
             <h3>Exchange</h3>
             <p>Expand your collection.</p>
-            <p><a href="#">Exchange</a></p>
+            <p><a href={% url "trades" %}>Exchange</a></p>
             <div>
                 {% for trade in trades %}
                     {% include 'cardtravel/preview/trades.html' %}

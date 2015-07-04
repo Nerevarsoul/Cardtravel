@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.utils.decorators import method_decorator
@@ -151,7 +151,7 @@ class CardListMixin(ListView):
     
     def get_context_data(self, **kwargs):
         context = super(CardListMixin, self).get_context_data(**kwargs)
-        cards = self.queryset
+        cards = Card.objects.all()
         countries = []
         series = []
         years = []
@@ -168,37 +168,33 @@ class CardListMixin(ListView):
         context["countries"] = countries
         context["series"] = series
         context["years"] = years
-        context['cards'] = cards
+        context['cards'] = self.queryset
         context.update(gain_userlist(self.request.user))
         return context
 
-class CardListView(CardListMixin):
+class CardListView(CardListMixin, ListView):
     template_name = 'cardtravel/cards.html'
 
 
-#def view_cards(request):
-    #context = RequestContext(request)
-    #args = {}
-    #countries = []
-    #series = []
-    #years = []
-    #cards = Card.objects.all()
-    #for card in cards:
-        #if card.country not in countries:
-            #countries.append(card.country)
-        #if card.series not in series:
-            #series.append(card.series)
-        #if card.issued_on not in years:
-            #years.append(card.issued_on)
-    #args.update(gain_userlist(request.user))
-    #args["cards"] = cards
-    #countries.sort()
-    #series.sort()
-    #years.sort()
-    #args["countries"] = countries
-    #args["series"] = series
-    #args["years"] = years
-    #return render_to_response('cardtravel/cards.html', args, context)
+class CardCategoryView(CardListMixin, ListView):
+    template_name = 'cardtravel/cards.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CardCategoryView, self).get_context_data(**kwargs)
+        context.update({"category": self.kwargs['category'], 
+            "cur_category": decode_url(self.kwargs['category_url'])})
+        return context
+
+    def get_queryset(self):
+        category = self.kwargs['category']
+        cur_category = decode_url(self.kwargs['category_url'])
+        if category == 'country':
+            self.queryset = Card.objects.filter(country=cur_category)
+        elif category == 'series': 
+            self.queryset = Card.objects.filter(series=cur_category)
+        elif category == 'year':
+            self.queryset = Card.objects.filter(issued_on=int(cur_category))
+        return self.queryset
 
 def view_card(request, card_id):
     context = RequestContext(request)
