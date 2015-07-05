@@ -133,7 +133,7 @@ def view_profile(request, user_id):
 
     args['wishlist'] = wishlist[0:3]
     args['collection'] = collection[0:3]
-    args['trades'] = Trade.objects.filter(user=user_id)
+    args['trades'] = Trade.objects.filter(user=user_id)[0:3]
 
     return render_to_response('cardtravel/profile.html', args, context)
 
@@ -144,13 +144,13 @@ def view_users(request):
     return render_to_response('cardtravel/users.html', args, context)
 
 
-class CardListMixin(ListView):
+class CardMixin(ListView):
 
     model = Card
     queryset = Card.objects.all()
     
     def get_context_data(self, **kwargs):
-        context = super(CardListMixin, self).get_context_data(**kwargs)
+        context = super(CardMixin, self).get_context_data(**kwargs)
         cards = Card.objects.all()
         countries = []
         series = []
@@ -172,11 +172,11 @@ class CardListMixin(ListView):
         context.update(gain_userlist(self.request.user))
         return context
 
-class CardListView(CardListMixin, ListView):
+class CardsView(CardMixin, ListView):
     template_name = 'cardtravel/cards.html'
 
 
-class CardCategoryView(CardListMixin, ListView):
+class CardCategoryView(CardMixin, ListView):
     template_name = 'cardtravel/cards.html'
 
     def get_context_data(self, **kwargs):
@@ -204,20 +204,27 @@ def view_card(request, card_id):
     args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/cardview.html', args, context)
 
-def view_cardlist(request, user_id, list_category):
-    context = RequestContext(request)
-    args = {}
-    user_profile = UserProfile.objects.get(user=user_id)
-    args['users'] = User.objects.get(id=user_id)
-    args['list_category'] = list_category
-    if list_category == 'wishlist':
-        cards = user_profile.get_wishlist()
-    elif list_category == 'collection':
-        cards = user_profile.get_collection()
-    args["cards"] = cards
-    if request.user.id != user_id:
-        args.update(gain_userlist(request.user))
-    return render_to_response('cardtravel/cardlist.html', args, context)
+
+class CardListView(ListView):
+    template_name = 'cardtravel/cardlist.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CardListView, self).get_context_data(**kwargs)
+        context.update({'users': User.objects.get(id=self.kwargs['user_id']),
+            'list_category': self.kwargs['list_category']})
+        if self.request.user.id != self.kwargs['user_id']:
+            context.update(gain_userlist(self.request.user))
+        return context
+
+    def get_queryset(self):
+        user_profile = UserProfile.objects.get(user=self.kwargs['user_id'])
+        list_category = self.kwargs['list_category']
+        if list_category == 'wishlist':
+            self.queryset = user_profile.get_wishlist()
+        elif list_category == 'collection':
+            self.queryset = user_profile.get_collection()
+        return self.queryset
+
 
 def add_card(request, list_category, card_id):
     context = RequestContext(request)

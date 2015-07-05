@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from cardtravel import views
 from .views import IndexPageView
 from .views import TradesView, TradeView, TradeListView
-from .views import CardListView, CardCategoryView
+from .views import CardsView, CardCategoryView, CardListView
 
 urlpatterns = patterns('',
 
@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     url(r'^profile/(?P<user_id>\d+)/(?P<list_category>\w+)/$', 
         'cardtravel.views.view_cardlist', name = 'view_cardlist'),
     
-    url(r'^cards/$', CardListView.as_view(), name = 'cards'),
+    url(r'^cards/$', CardsView.as_view(), name = 'cards'),
     url(r'^cards/(?P<card_id>\d+)/$', 'cardtravel.views.view_card', 
         name = 'view_card'),
     url(r'^cards/(?P<category>\w+)/(?P<category_url>\w+)/$', 
