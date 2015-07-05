@@ -12,14 +12,14 @@
 <div class="container">
 	<div class="row">
 
-			<div class="col-md-10">
-				{% autopaginate cards 8 %}
-				{% for card in cards %}
-					<div class="col-md-6">
-						{% include 'cardtravel/preview/cards.html' %}
-					</div>
-				{% endfor %}
-			</div>
+		<div class="col-md-10">
+			{% autopaginate cards 8 %}
+			{% for card in cards %}
+				<div class="col-md-6">
+					{% include 'cardtravel/preview/cards.html' %}
+				</div>
+			{% endfor %}
+		</div>
 
 		<div class="col-md-2">
 			<div class="panel-group" id="accordion">

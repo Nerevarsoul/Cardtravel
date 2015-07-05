@@ -1,3 +1,4 @@
+/* top menu */
 #responsive-menu a {
 	text-decoration: none;
 	color: #7f7f7f;
@@ -8,19 +9,13 @@
     color: white;
 }
 
-strong {
-	font-weight: bold;
+/* footer menu */
+.navbar-inner p {
+	color: #7f7f7f;
 }
 
-h1 {
-	font-size: 2.2em;
-	font-weight: bold;
-}
 
-.content {
-	text-align: center;
-}
-
+/* overall settings for footer and top menu */
 .nav a {
   color: #5a5a5a;
   font-size: 18px;
@@ -32,6 +27,22 @@ h1 {
   display: inline;
 }
 
+/* overall style */
+strong {
+	font-weight: bold;
+}
+
+h1 {
+	font-size: 2.2em;
+	font-weight: bold;
+}
+
+/* content style */
+.content {
+	text-align: center;
+}
+
+/* message */
 .success {
 	background-color: #008800;
 	text-align: center;
@@ -43,3 +54,4 @@ h1 {
 	text-align: center;
 	border-color: #550000;
 }
+

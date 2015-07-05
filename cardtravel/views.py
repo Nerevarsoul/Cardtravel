@@ -204,23 +204,6 @@ def view_card(request, card_id):
     args.update(gain_userlist(request.user))
     return render_to_response('cardtravel/cardview.html', args, context)
 
-def view_categories(request, category, category_url):
-    context = RequestContext(request)
-    args = {}
-    cur_category = decode_url(category_url)
-    args["category"] = category
-    args["category_url"] = category_url
-    args["cur_category"] = cur_category
-    if category == 'country':
-        cards = Card.objects.filter(country=cur_category)
-    elif category == 'series': 
-        cards = Card.objects.filter(series=cur_category)
-    elif category == 'year':
-        cards = Card.objects.filter(issued_on=int(cur_category))
-    args["cards"] = cards
-    args.update(gain_userlist(request.user))
-    return render_to_response('cardtravel/category.html', args, context)
-
 def view_cardlist(request, user_id, list_category):
     context = RequestContext(request)
     args = {}
