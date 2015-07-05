@@ -3,7 +3,12 @@
 {% load pagination_tags %}
 {% load cardtravel_extras %}
 
+{% block css %}
+	<link rel="stylesheet" type="text/css" href={% static "css/cards.css" %}/>
+{% endblock %}
+
 {% block content %}
+
 <!-- for category view-->
 <h2>{{ category }}</h2>
 <h3>{{ cur_category }}</h3>

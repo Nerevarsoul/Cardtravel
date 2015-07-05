@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-{% block content %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}"/>
+{% endblock %}
 
-	<head>
-		 <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}"/>
-	</head>
+{% block content %}
 
 	<div class="jumbotron">
       <div class="container">
