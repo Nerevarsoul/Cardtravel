@@ -214,6 +214,7 @@ class CardListView(ListView):
             'list_category': self.kwargs['list_category']})
         if self.request.user.id != self.kwargs['user_id']:
             context.update(gain_userlist(self.request.user))
+        context['cards'] = self.queryset
         return context
 
     def get_queryset(self):

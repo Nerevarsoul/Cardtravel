@@ -18,7 +18,7 @@ urlpatterns = patterns('',
         name = 'view_profile'),
     url(r'^profile/$', 'cardtravel.views.view_users', name = 'users'),
     url(r'^profile/(?P<user_id>\d+)/(?P<list_category>\w+)/$', 
-        'cardtravel.views.view_cardlist', name = 'view_cardlist'),
+         CardListView.as_view(), name = 'view_cardlist'),
     
     url(r'^cards/$', CardsView.as_view(), name = 'cards'),
     url(r'^cards/(?P<card_id>\d+)/$', 'cardtravel.views.view_card', 
