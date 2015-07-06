@@ -205,6 +205,21 @@ def view_card(request, card_id):
     return render_to_response('cardtravel/cardview.html', args, context)
 
 
+class CardView(ListView):
+
+    template_name = 'cardtravel/cardview.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CardView, self).get_context_data(**kwargs)
+        context.update(gain_userlist(self.request.user))
+        context["card"] = self.queryset
+        return context
+
+    def get_queryset(self):
+        self.queryset = Card.objects.get(id=self.kwargs['card_id'])
+        return self.queryset
+
+
 class CardListView(ListView):
     template_name = 'cardtravel/cardlist.html'
 
