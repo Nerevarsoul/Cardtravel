@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    #http://django-haystack.readthedocs.org/en/v2.4.0/toc.html
+    'haystack',
     #https://github.com/ericflo/django-pagination/blob/master/docs/usage.txt
     'pagination',
     'cardtravel',
@@ -128,6 +130,13 @@ DEBUG_TOOLBAR_PATCH_SETTINGS = False
 INTERNAL_IPS = '127.0.0.1'
 
 LOGIN_URL = '/login/'
+
+#http://django-haystack.readthedocs.org/en/v2.4.0/tutorial.html
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
 
 #https://github.com/ericflo/django-pagination/blob/master/docs/usage.txt
 

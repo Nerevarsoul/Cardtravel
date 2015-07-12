@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('cardtravel.urls')),
     url(r'^messages/', include('postman.urls')),
+    url(r'^search/', include('haystack.urls')),
 )
 
 if settings.DEBUG:
