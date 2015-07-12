@@ -1,0 +1,20 @@
+hr { 
+	width: 100%;
+	size: 2px;
+	color: red;
+	border-bottom: 2px solid green;
+}
+
+.col-md-8 {
+	text-align: left;
+}
+
+.wishlist, .collection{
+	border-right: 2px solid green;
+}
+
+.user {
+	border-right: 2px solid green;
+	background-color: #A9B1AD;
+	text-align: left;
+}

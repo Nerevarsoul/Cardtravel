@@ -1,52 +1,67 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/profile.css" %}"/>
+{% endblock %}
+
 {% block content %}
-	
-	<h1>{{users.username}}</h1>
-	<p><strong>email: </strong>{{ users.email }}</p>
-	<p><strong>first name: </strong>{{ users.first_name }}</p>
-	<p><strong>last_name: </strong>{{ users.last_name }}</p>
-	<p><strong>last login: </strong>{{ users.last_login }}</p>
-	<p><strong>date joined: </strong>{{ users.date_joined }}</p>
-	<p><strong>address: </strong>{{ profiles.adress }}</p>
-	<img src="{{profiles.picture.url}}">
-	{% if user.id == users.id %}
-		<a href={% url 'edit_profile' %}>Edit your profile</a>
-		<a href={% url 'postman_inbox' %}>View inbox</a>
-	{% else %}
-		<a href={% url 'postman_write' users %}>Write message</a>
-	{% endif %}
-	<br>
-	<div class="row">
-		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-			<p><strong>{{users.username}} 
-				<a href={% url 'view_cardlist' users.id 'wishlist' %}>wishlist</a>:
-			</strong></p>
-			{% for card in wishlist %}
-				{% include 'cardtravel/preview/cards.html' %}
-				<br>
-			{% endfor %}
+	<div class="container">
+        <div class="row">
+        	<div class="col-md-4 user">
+				<h1>{{users.username}}</h1>
+				<img src="{{profiles.picture.url}}">
+				{% if user.id == users.id %}
+					<p><a href={% url 'edit_profile' %}>Edit your profile</a></p>
+					<p><a href={% url 'postman_inbox' %}>View inbox</a></p>
+				{% else %}
+					<p><a href={% url 'postman_write' users %}>Write message</a></p>
+				{% endif %}
+			</div>
+			<div class="col-md-8">
+				<p><strong>email: </strong>{{ users.email }}</p>
+				<p><strong>address: </strong>{{ profiles.adress }}</p>
+				<hr>
+				<p><strong>first name: </strong>{{ users.first_name }}</p>
+				<p><strong>last_name: </strong>{{ users.last_name }}</p>
+				<hr>
+				<p><strong>last login: </strong>{{ users.last_login }}</p>
+				<p><strong>date joined: </strong>{{ users.date_joined }}</p>
+					
+			</div>
 		</div>
-		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-			<p><strong>{{users.username}} 
-				<a href={% url 'view_cardlist' users.id 'collection' %}>collectionlist</a>:
-			</strong></p>
-			{% for card in collection %}
-				{% include 'cardtravel/preview/cards.html' %}
-				<br>
-			{% endfor %}
+			<hr>
+		<div class="container">
+		<div class="row">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 wishlist">
+				<p><strong>{{users.username}} 
+					<a href={% url 'view_cardlist' users.id 'wishlist' %}>wishlist</a>:
+				</strong></p>
+				{% for card in wishlist %}
+					{% include 'cardtravel/preview/cards.html' %}
+					<br>
+				{% endfor %}
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 collection">
+				<p><strong>{{users.username}} 
+					<a href={% url 'view_cardlist' users.id 'collection' %}>collectionlist</a>:
+				</strong></p>
+				{% for card in collection %}
+					{% include 'cardtravel/preview/cards.html' %}
+					<br>
+				{% endfor %}
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+				<p><strong>
+					{{users.username}} <a href={% url 'view_tradelist' users.id %}>tradelist</a>:
+				</strong></p>
+				{% for trade in trades %}
+					{% include 'cardtravel/preview/trades.html' %}
+					<br>
+				{% endfor %}
+			</div>
 		</div>
-		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-			<p><strong>
-				{{users.username}} <a href={% url 'view_tradelist' users.id %}>tradelist</a>:
-			</strong></p>
-			{% for trade in trades %}
-				{% include 'cardtravel/preview/trades.html' %}
-				<br>
-			{% endfor %}
 		</div>
-	</div>
 
 
 {% endblock %}
