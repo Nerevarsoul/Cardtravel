@@ -33,7 +33,7 @@
 				<tbody>
 					{% for card in cards %}
 						<tr>
-							<td><img src="{{card.face_picture.url}}" height="200"></td>
+							<td><img src="{{card.face_picture.url}}"></td>
 							<td><h5><a href={% url 'view_card' card.id %}>{{ card.name }}</a></h5></td>
 							<td><a href={% url 'view_category' 'country' card.country|encode_url %}>{{ card.country }}</a></td>
 							<td><a href={% url 'view_category' 'series' card.series|encode_url %}>{{ card.series }}</a></td>
