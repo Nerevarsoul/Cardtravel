@@ -47,7 +47,7 @@ class IndexPageView(TemplateView):
 def register(request):
     context = RequestContext(request)
     registered = False
-    if request.POST:
+    if request.method == "POST":
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
         if user_form.is_valid() and profile_form.is_valid():
@@ -69,15 +69,17 @@ def register(request):
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
-    return render_to_response('cardtravel/register.html', {'user_form': user_form, 
-        'profile_form': profile_form, 'registered': registered}, context)
+    return render_to_response('cardtravel/register.html', 
+    	{'user_form': user_form, 
+        'profile_form': profile_form, 
+        'registered': registered}, context)
 
 @login_required
 def edit_profile(request):
     context = RequestContext(request)
     user = request.user
     profile = UserProfile.objects.get(user=user)
-    if request.POST:
+    if request.method == "POST":
         editprofile_form = EditProfileForm(data=request.POST)
         if editprofile_form.is_valid() and editprofile_form.has_changed():
             user.username = request.POST['username']
@@ -100,7 +102,7 @@ def edit_profile(request):
 
 def login(request):
     context = RequestContext(request)
-    if request.POST:
+    if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
@@ -267,7 +269,9 @@ def remove_card(request, list_category):
         elif list_category == 'collection':
             cards = Collection.objects.get(user=request.user).collectionlist
             cards.remove(card)
-        messages.add_message(request, settings.DELETE_MESSAGES, 'You delete card')
+        messages.add_message(request, 
+        	settings.DELETE_MESSAGES, 
+        	'You delete card')
     return redirect(request.META.get('HTTP_REFERER'))
 
 
@@ -299,7 +303,7 @@ class TradeView(TemplateView):
 @login_required
 def add_trade(request):
     context = RequestContext(request)
-    if request.POST:
+    if request.method == "POST":
         trade_form = TradeForm(request.POST, request.FILES)
         if trade_form.is_valid():
             trade = trade_form
@@ -327,7 +331,7 @@ def edit_trade(request, trade_id):
     context = RequestContext(request)
     trade = Trade.objects.get(id=trade_id)
     context['trade'] = trade
-    if request.POST:
+    if request.method == "POST":
         trade_form = TradeForm(request.POST, request.FILES)
         if trade_form.is_valid() and trade_form.has_changed():
             card_id = request.POST['card']

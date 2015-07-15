@@ -31,9 +31,13 @@ img {
 }
 
 
-
-
-/* Линия между таблицей и правой панелью */
+/* Line between table and right side panel */
 .col-md-10 {
 	border-right: 2px solid green;
+}
+
+/* right side panel */
+.panel-group {
+	position: fixed;
+	text-align: left;
 }
