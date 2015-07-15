@@ -244,9 +244,8 @@ class CardListView(ListView):
 
 def add_card(request, list_category):
     context = RequestContext(request)
-    result = {'status': 0}
-    if request.form["card_id"].isdigit():
-        card_id = int(request.form["card_id"])
+    if request.method == "POST":
+        card_id = int(request.POST['card_id'])
         card = Card.objects.get(id=card_id)
         if list_category == 'wishlist':
             cards = WishList.objects.get(user=request.user).wishlist
@@ -259,9 +258,8 @@ def add_card(request, list_category):
 
 def remove_card(request, list_category):
     context = RequestContext(request)
-    result = {'status': 0}
-    if request.form["card_id"].isdigit():
-        card_id = int(request.form["card_id"])
+    if request.method == "POST":
+        card_id = int(request.POST['card_id'])
         card = Card.objects.get(id=card_id)
         if list_category == 'wishlist':
             cards = WishList.objects.get(user=request.user).wishlist

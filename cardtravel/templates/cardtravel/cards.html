@@ -39,34 +39,7 @@
 							<td><a href={% url 'view_category' 'series' card.series|encode_url %}>{{ card.series }}</a></td>
 							<td><a href={% url 'view_category' 'year' card.issued_on %}>{{ card.issued_on }}</a></td>
 							<td>
-								<div class="operation">
-									{% if card in user_wishlist %}
-										<a href={% url 'remove_card' 'wishlist'%} class="{{card.id}}">
-											<button type="submit">
-												<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-											</button>
-										</a>
-									{% else %}
-										<a href={% url 'add_card' 'wishlist'%} class="{{card.id}}">
-											<button type="submit">
-												<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-											</button>
-										</a>
-									{% endif %}
-									{% if card in user_collection %}
-										<a href={% url 'remove_card' 'collection'%} class="{{card.id}}">
-											<button type="submit">
-												<span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
-											</button>
-										</a>
-									{% else %}
-										<a href={% url 'add_card' 'collection'%} class="{{card.id}}">
-											<button type="submit">
-												<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
-											</button>
-										</a>
-									{% endif %}
-								</div>
+								{% include 'cardtravel/preview/add_remove.html' %}
 							</td>
 						</tr>
 					{% endfor %}
