@@ -5,28 +5,28 @@
 <p><a href={% url 'view_category' 'country' card.country|encode_url %}>{{ card.country }}</a></p>
 <p><a href={% url 'view_category' 'year' card.issued_on %}>{{ card.issued_on }}</a></p>
 {% if card in user_wishlist %}
-	<form action={% url 'remove_card' 'wishlist' card.id %}>
+	<a href={% url 'remove_card' 'wishlist'%} class="{{card.id}}">
 		<button type="submit">
 			<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
 		</button>
-	</form>
+	</a>
 {% else %}
-	<form action={% url 'add_card' 'wishlist' card.id %}>
+	<a href={% url 'add_card' 'wishlist'%} class="{{card.id}}">
 		<button type="submit">
 			<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 		</button>
-	</form>
+	</a>
 {% endif %}
 {% if card in user_collection %}
-	<form action={% url 'remove_card' 'collection' card.id %}>
+	<a href={% url 'remove_card' 'collection'%} class="{{card.id}}">
 		<button type="submit">
 			<span class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></span>
 		</button>
-	</form>
+	</a>
 {% else %}
-	<form action={% url 'add_card' 'collection' card.id %}>
+	<a href={% url 'add_card' 'collection'%} class="{{card.id}}">
 		<button type="submit">
 			<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
 		</button>
-	</form>
+	</a>
 {% endif %}

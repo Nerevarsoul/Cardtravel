@@ -18,14 +18,14 @@
 		<p><strong>description: </strong>{{ card.description }}</p>
 		<img src={{card.face_picture.url}} height="200">
 		{% if card in user_wishlist %}
-			<a href={% url 'remove_card' 'wishlist' card.id %}>Remove card in wishlist</a>
+			<a href={% url 'remove_card' 'wishlist'%} class="{{card.id}}">Remove card in wishlist</a>
 		{% else %}
-			<a href={% url 'add_card' 'wishlist' card.id %}>Add card from wishlist</a>
+			<a href={% url 'add_card' 'wishlist'%} class="{{card.id}}">Add card from wishlist</a>
 		{% endif %}
 		{% if card in user_collection %}
-			<a href={% url 'remove_card' 'collection' card.id %}>Remove card in collection</a>
+			<a href={% url 'remove_card' 'collection'%} class="{{card.id}}">Remove card in collection</a>
 		{% else %}
-			<a href="/add_card/collection/{{card.id}}/">Add card from collection</a>
+			<a href={% url 'add_card' 'collection'%} class="{{card.id}}">Add card from collection</a>
 		{% endif %}
 		<img src={{card.reverse_picture.url}} height="200">
 	</div>

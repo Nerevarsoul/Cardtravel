@@ -242,28 +242,34 @@ class CardListView(ListView):
         return self.queryset
 
 
-def add_card(request, list_category, card_id):
+def add_card(request, list_category):
     context = RequestContext(request)
-    card = Card.objects.get(id=card_id)
-    if list_category == 'wishlist':
-        cards = WishList.objects.get(user=request.user).wishlist
-        cards.add(card)
-    elif list_category == 'collection':
-        cards = Collection.objects.get(user=request.user).collectionlist
-        cards.add(card)
-    messages.add_message(request, messages.SUCCESS, 'You add card')
+    result = {'status': 0}
+    if request.form["card_id"].isdigit():
+        card_id = int(request.form["card_id"])
+        card = Card.objects.get(id=card_id)
+        if list_category == 'wishlist':
+            cards = WishList.objects.get(user=request.user).wishlist
+            cards.add(card)
+        elif list_category == 'collection':
+            cards = Collection.objects.get(user=request.user).collectionlist
+            cards.add(card)
+        messages.add_message(request, messages.SUCCESS, 'You add card')
     return redirect(request.META.get('HTTP_REFERER'))
 
-def remove_card(request, list_category, card_id):
+def remove_card(request, list_category):
     context = RequestContext(request)
-    card = Card.objects.get(id=card_id)
-    if list_category == 'wishlist':
-        cards = WishList.objects.get(user=request.user).wishlist
-        cards.remove(card)
-    elif list_category == 'collection':
-        cards = Collection.objects.get(user=request.user).collectionlist
-        cards.remove(card)
-    messages.add_message(request, settings.DELETE_MESSAGES, 'You delete card')
+    result = {'status': 0}
+    if request.form["card_id"].isdigit():
+        card_id = int(request.form["card_id"])
+        card = Card.objects.get(id=card_id)
+        if list_category == 'wishlist':
+            cards = WishList.objects.get(user=request.user).wishlist
+            cards.remove(card)
+        elif list_category == 'collection':
+            cards = Collection.objects.get(user=request.user).collectionlist
+            cards.remove(card)
+        messages.add_message(request, settings.DELETE_MESSAGES, 'You delete card')
     return redirect(request.META.get('HTTP_REFERER'))
 
 
