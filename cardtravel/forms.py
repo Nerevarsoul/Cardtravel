@@ -42,7 +42,7 @@ class EditProfileForm(forms.ModelForm):
         fields = ('picture', 'adress')
 
 class TradeForm(forms.ModelForm):
-    user = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput())
+    user = forms.ModelChoiceField(queryset = User.objects.all(), widget=forms.HiddenInput())
 
     class Meta:
         model = Trade

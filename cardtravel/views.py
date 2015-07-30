@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
@@ -296,7 +297,9 @@ class TradeListView(ListView):
         return context
 
     def get_queryset(self, **kwargs):
-        self.queryset = Trade.objects.filter(user=self.kwargs['user_id'])
+        self.queryset = Trade.objects\
+            .filter(user=self.kwargs['user_id'])\
+            .order_by('-date')
         return self.queryset
 
 
@@ -307,7 +310,41 @@ class TradeView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(TradeView, self).get_context_data(**kwargs)
+        context.update(csrf(request))
         return context
+
+
+class AddTrade(FormView):
+    template_name = 'cardtravel/add_trade.html'
+    form_class = TradeForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AddTrade, self).get_context_data(**kwargs)
+        return context
+
+    def get(self, request, *args, **kwargs):
+        initial = {'user': request.user}
+        form = self.form_class(initial=initial)
+        return render_to_response(self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        trade_form = TradeForm(request.POST, request.FILES)
+        if trade_form.is_valid():
+            trade = trade_form
+            if 'face_picture' in request.FILES:
+                trade.face_picture = request.FILES['face_picture']
+            if 'reverse_picture' in request.FILES:
+                trade.reverse_picture = request.FILES['reverse_picture']
+            if 'addiction_picture1' in request.FILES:
+                trade.addiction_picture1 = request.FILES['addiction_picture1']
+            if 'addiction_picture2' in request.FILES:
+                trade.addiction_picture2 = request.FILES['addiction_picture2']
+            if 'addiction_picture3' in request.FILES:
+                trade.addiction_picture3 = request.FILES['addiction_picture3']
+            trade.save()
+            return redirect('/index/')
+        return render_to_response(self.template_name, {'form': form})
+
 
 @login_required
 def add_trade(request):
