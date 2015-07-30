@@ -5,7 +5,7 @@
 	<div>
 		<img src="{{trade.face_picture.url}}" height="400">
 		<p><a href={% url 'view_profile' trade.user.id %}>{{trade.user}}</a></p>
-		<p><a href={% url 'view_trade' trade.id %}>{{trade.card.name}} {{trade.condition}}</a></p>
+		<p><a href="{{ trade.get_absolute_url }}">{{trade.card.name}} {{trade.condition}}</a></p>
 		<p>{{trade.date|date:'D d M Y'}}</p>
 		<p>{{trade.description}}</p>
 		{% if trade.reverse_picture %}

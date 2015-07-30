@@ -40,6 +40,9 @@ class Card(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return "/cards/%i/" % self.id
+
 
 class WishList(models.Model):
     user = models.OneToOneField(User)
@@ -79,4 +82,7 @@ class Trade(models.Model):
 
     def __unicode__(self):
         return self.card.name + ' ' + self.condition
+
+    def get_absolute_url(self):
+        return "/trades/%i/" % self.id
 

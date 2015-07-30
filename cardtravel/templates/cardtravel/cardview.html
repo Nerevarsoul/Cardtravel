@@ -4,7 +4,7 @@
 
 {% block content %}
 	<div>
-		<h2><a href={% url 'view_card' card.id %}>{{ card.name }}</a></h2>
+		<h2><a href="{{ card.get_absolute_url }}">{{ card.name }}</a></h2>
 		<p><strong>country: </strong>
 			<a href={% url 'view_category' 'country' card.country|encode_url %}>{{ card.country }}</a>
 		</p>

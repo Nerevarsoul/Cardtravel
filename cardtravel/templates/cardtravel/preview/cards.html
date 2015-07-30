@@ -1,7 +1,7 @@
 {% load cardtravel_extras %}
 
 <img src="{{card.face_picture.url}}" height="200">
-<h5><a href={% url 'view_card' card.id %}>{{ card.name }}</a></h5>
+<h5><a href="{{ card.get_absolute_url }}">{{ card.name }}</a></h5>
 <p><a href={% url 'view_category' 'country' card.country|encode_url %}>{{ card.country }}</a></p>
 <p><a href={% url 'view_category' 'year' card.issued_on %}>{{ card.issued_on }}</a></p>
 {% include 'cardtravel/preview/add_remove.html' %}

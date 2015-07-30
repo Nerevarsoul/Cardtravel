@@ -34,7 +34,7 @@
 					{% for card in cards %}
 						<tr>
 							<td><img src="{{card.face_picture.url}}"></td>
-							<td><h5><a href={% url 'view_card' card.id %}>{{ card.name }}</a></h5></td>
+							<td><h5><a href="{{ card.get_absolute_url }}">{{ card.name }}</a></h5></td>
 							<td><a href={% url 'view_category' 'country' card.country|encode_url %}>{{ card.country }}</a></td>
 							<td><a href={% url 'view_category' 'series' card.series|encode_url %}>{{ card.series }}</a></td>
 							<td class="year"><a href={% url 'view_category' 'year' card.issued_on %}>{{ card.issued_on }}</a></td>

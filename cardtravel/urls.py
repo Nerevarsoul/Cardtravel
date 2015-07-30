@@ -15,8 +15,8 @@ sitemaps = {
 urlpatterns = patterns('',
 
     url(r'^index/$', IndexPageView.as_view(), name = 'index'),
-    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
-        name='django.contrib.sitemaps.views.sitemap'),
+    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', 
+        {'sitemaps': sitemaps}, name='sitemaps'),
 
     url(r'^login/$', 'cardtravel.views.login', name = 'login'),
     url(r'^register/$', 'cardtravel.views.register', name = 'register'),
