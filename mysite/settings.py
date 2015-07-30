@@ -48,7 +48,6 @@ INSTALLED_APPS = (
     #http://django-postman.readthedocs.org/en/latest/index.html
     'postman',
     'cardtravel',
-    'south',
 )
 
 MIDDLEWARE_CLASSES = (
