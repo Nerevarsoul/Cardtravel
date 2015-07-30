@@ -70,7 +70,7 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
     return render_to_response('cardtravel/register.html', 
-    	{'user_form': user_form, 
+        {'user_form': user_form, 
         'profile_form': profile_form, 
         'registered': registered}, context)
 
@@ -207,19 +207,15 @@ def view_card(request, card_id):
     return render_to_response('cardtravel/cardview.html', args, context)
 
 
-class CardView(ListView):
-
+class CardView(DetailView):
+    model = Card
     template_name = 'cardtravel/cardview.html'
+    context_object_name = 'card'
 
     def get_context_data(self, **kwargs):
         context = super(CardView, self).get_context_data(**kwargs)
         context.update(gain_userlist(self.request.user))
-        context["card"] = self.queryset
         return context
-
-    def get_queryset(self):
-        self.queryset = Card.objects.get(id=self.kwargs['card_id'])
-        return self.queryset
 
 
 class CardListView(ListView):
@@ -270,34 +266,47 @@ def remove_card(request, list_category):
             cards = Collection.objects.get(user=request.user).collectionlist
             cards.remove(card)
         messages.add_message(request, 
-        	settings.DELETE_MESSAGES, 
-        	'You delete card')
+            settings.DELETE_MESSAGES, 
+            'You delete card')
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-class TradesView(TemplateView):
+class TradesView(ListView):
+    model = Trade
     template_name = "cardtravel/trades.html"
+    context_object_name = 'trades'
 
     def get_context_data(self, **kwargs):
         context = super(TradesView, self).get_context_data(**kwargs)
-        context['trades'] = Trade.objects.all()
         return context
 
-class TradeListView(TemplateView):
+    def get_queryset(self):
+        self.queryset = Trade.objects.order_by('-date')
+        return self.queryset
+
+
+class TradeListView(ListView):
+    model = Trade
     template_name = "cardtravel/tradelist.html"
+    context_object_name = 'trades'
 
-    def get_context_data(self, user_id, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(TradeListView, self).get_context_data(**kwargs)
-        context['trades'] = Trade.objects.filter(user=user_id)
-        context['current_user'] = User.objects.get(id=user_id)
+        context['current_user'] = User.objects.get(id=self.kwargs['user_id'])
         return context
 
-class TradeView(TemplateView):
-    template_name = "cardtravel/trade.html"
+    def get_queryset(self, **kwargs):
+        self.queryset = Trade.objects.filter(user=self.kwargs['user_id'])
+        return self.queryset
 
-    def get_context_data(self, trade_id, **kwargs):
+
+class TradeView(DetailView):
+    model = Trade
+    template_name = "cardtravel/trade.html"
+    context_object_name = 'trade'
+
+    def get_context_data(self, **kwargs):
         context = super(TradeView, self).get_context_data(**kwargs)
-        context['trade'] = Trade.objects.get(id=trade_id)
         return context
 
 @login_required
@@ -367,44 +376,13 @@ def edit_trade(request, trade_id):
 @login_required
 def response_trade(request):
     pass
-
-#class AddTradeView(FormView):
-    #form_class = TradeForm
-    #template_name = "cardtravel/add_trade.html"
-    #success_url = '/index/'
-
-    #@method_decorator(login_required)
-    #def get_context_data(self, **kwargs):
-        #context = super(AddTradeView, self).get_context_data(**kwargs)
-        #context.update(csrf(self.request))
-        #context['trade_form'] = self.form_class(initial={'user': self.request.user})
-        #return context
-
-    #@method_decorator(login_required)
-    #def post(self, request, **kwargs):
-        #trade_form = self.form_class(request.POST)
-        #context = super(AddTradeView, self).get_context_data(**kwargs)
-        #context.update(csrf(self.request))
-        #context['trade_form'] = trade_form
-        #if trade_form.is_valid():
-            #return self.form_valid(trade_form)
-        #else:
-            #return render_to_response(self.template_name, context)
-    
-    #@method_decorator(login_required)
-    #def form_valid(self, trade_form):
-        #context = super(AddTradeView, self).get_context_data(**kwargs)
-        #trade = trade_form
-        #trade.save()
-        #return super(AddTradeView, self).form_valid(trade_form)
       
+
 def page403(request):
     return render(request, '403.html', {}, status=403)
 
-
 def page404(request):
     return render(request, '404.html', {}, status=404)
-
 
 def page500(request):
     return render(request, '500.html', {}, status=500)

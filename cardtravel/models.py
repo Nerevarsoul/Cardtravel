@@ -79,3 +79,4 @@ class Trade(models.Model):
 
     def __unicode__(self):
         return self.card.name + ' ' + self.condition
+
