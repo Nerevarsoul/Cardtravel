@@ -1,13 +1,22 @@
 from django.conf.urls import patterns, include, url
+from django.contrib.sitemaps.views import sitemap
 
 from cardtravel import views
 from .views import IndexPageView
 from .views import TradesView, TradeView, TradeListView
 from .views import CardsView, CardCategoryView, CardListView, CardView
+from .sitemaps import CardSitemap, TradeSitemap
+
+sitemaps = {
+    'cards':CardSitemap,
+    'trades':TradeSitemap,
+}
 
 urlpatterns = patterns('',
 
     url(r'^index/$', IndexPageView.as_view(), name = 'index'),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'),
 
     url(r'^login/$', 'cardtravel.views.login', name = 'login'),
     url(r'^register/$', 'cardtravel.views.register', name = 'register'),

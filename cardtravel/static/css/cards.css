@@ -30,6 +30,10 @@ img {
 	width: 200px;
 }
 
+/* width col issued on */
+.year {
+	width: 10%;
+}
 
 /* Line between table and right side panel */
 .col-md-10 {

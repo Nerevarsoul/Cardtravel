@@ -26,7 +26,7 @@
 						<td>Card name</td>
 						<td>Country</td>
 						<td>Series</td>
-						<td>Year</td>
+						<td>Issued on</td>
 						<td>Operation</td>
 					</tr>
 				</thead>
@@ -37,7 +37,7 @@
 							<td><h5><a href={% url 'view_card' card.id %}>{{ card.name }}</a></h5></td>
 							<td><a href={% url 'view_category' 'country' card.country|encode_url %}>{{ card.country }}</a></td>
 							<td><a href={% url 'view_category' 'series' card.series|encode_url %}>{{ card.series }}</a></td>
-							<td><a href={% url 'view_category' 'year' card.issued_on %}>{{ card.issued_on }}</a></td>
+							<td class="year"><a href={% url 'view_category' 'year' card.issued_on %}>{{ card.issued_on }}</a></td>
 							<td>
 								{% include 'cardtravel/preview/add_remove.html' %}
 							</td>

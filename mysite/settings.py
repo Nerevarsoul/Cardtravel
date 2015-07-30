@@ -37,15 +37,17 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'debug_toolbar',
     #http://django-haystack.readthedocs.org/en/v2.4.0/toc.html
     'haystack',
     #https://github.com/ericflo/django-pagination/blob/master/docs/usage.txt
     'pagination',
-    'cardtravel',
-    'south',
     #http://django-postman.readthedocs.org/en/latest/index.html
     'postman',
+    'cardtravel',
+    'south',
 )
 
 MIDDLEWARE_CLASSES = (
