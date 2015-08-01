@@ -8,7 +8,7 @@ from django.core.context_processors import csrf
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import get_object_or_404, redirect, render_to_response 
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
@@ -317,50 +317,24 @@ class AddTrade(FormView):
     template_name = 'cardtravel/add_trade.html'
     form_class = TradeForm
 
+    def get_object(self):
+        if self.kwargs.get('trade_id'):
+            trade = get_object_or_404(Trade, pk=self.kwargs.get('trade_id'))
+        else:
+            trade = None
+        return trade
+
     def get_context_data(self, **kwargs):
         context = super(AddTrade, self).get_context_data(**kwargs)
+        context['trade'] = trade = self.get_object()
         context.update(csrf(request))
         return context
 
     def get(self, request, *args, **kwargs):
+        trade = self.get_object()
         initial = {'user': request.user}
-        form = self.form_class(initial=initial)
-        return render_to_response(self.template_name, {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        trade_form = TradeForm(request.POST, request.FILES)
-        if trade_form.is_valid():
-            trade = trade_form
-            if 'face_picture' in request.FILES:
-                trade.face_picture = request.FILES['face_picture']
-            if 'reverse_picture' in request.FILES:
-                trade.reverse_picture = request.FILES['reverse_picture']
-            if 'addiction_picture1' in request.FILES:
-                trade.addiction_picture1 = request.FILES['addiction_picture1']
-            if 'addiction_picture2' in request.FILES:
-                trade.addiction_picture2 = request.FILES['addiction_picture2']
-            if 'addiction_picture3' in request.FILES:
-                trade.addiction_picture3 = request.FILES['addiction_picture3']
-            trade.save()
-            return redirect('/index/')
-        return render_to_response(self.template_name, {'form': form})
-
-
-class EditTrade(FormView):
-    template_name = 'cardtravel/edit_trade.html'
-    form_class = TradeForm
-
-    def get_context_data(self, **kwargs):
-        context = super(EditTrade, self).get_context_data(**kwargs)
-        return context
-
-    def get_object(self):
-        trade = get_object_or_404(Trade, pk=self.kwargs.get('trade_id'))
-        return trade
-
-    def get(self, request, *args, **kwargs):
-        initial={'user': trade.user,
-                 'card': trade.card,
+        if trade:
+            initial.update({'card': trade.card,
                  'condition': trade.condition,
                  'description': trade.description,
                  'face_picture': trade.face_picture,
@@ -368,7 +342,7 @@ class EditTrade(FormView):
                  'addiction_picture1': trade.addiction_picture1, 
                  'addiction_picture2': trade.addiction_picture2, 
                  'addiction_picture3': trade.addiction_picture3
-        }
+        })
         form = self.form_class(initial=initial)
         return render_to_response(self.template_name, {'form': form})
 
