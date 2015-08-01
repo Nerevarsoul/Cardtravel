@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.contrib.auth.decorators import login_required
 from django.contrib.sitemaps.views import sitemap
 
 from cardtravel import views
@@ -6,6 +7,7 @@ from .views import IndexPageView
 from .views import TradesView, TradeView, TradeListView, AddTrade
 from .views import CardsView, CardCategoryView, CardListView, CardView
 from .sitemaps import CardSitemap, TradeSitemap
+
 
 sitemaps = {
     'cards':CardSitemap,
@@ -41,7 +43,8 @@ urlpatterns = patterns('',
 
     url(r'^trades/$', TradesView.as_view(), name = 'trades'),
     url(r'^trades/(?P<pk>\d+)/$', TradeView.as_view(), name = 'view_trade'),
-    url(r'^trades/add/$', AddTrade.as_view(), name = 'add_trade'),
+    url(r'^trades/add/$', login_required(AddTrade.as_view()), 
+        name = 'add_trade'),
     url(r'^tradelist/(?P<user_id>\d+)/$', TradeListView.as_view(), 
         name = 'view_tradelist'),
     url(r'^trades/edit/(?P<trade_id>\d+)/$', 'cardtravel.views.edit_trade', 

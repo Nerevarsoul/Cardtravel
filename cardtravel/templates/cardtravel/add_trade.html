@@ -5,6 +5,7 @@
 {% block content %}
     <div>
         <form enctype="multipart/form-data" action="/trades/add/" method="post">
+            {% csrf_token %}
             {{ form }}
             
             <input type="submit" value="Add new trade"/>
