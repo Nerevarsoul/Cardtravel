@@ -199,14 +199,6 @@ class CardCategoryView(CardMixin, ListView):
             self.queryset = Card.objects.filter(issued_on=int(cur_category))
         return self.queryset
 
-def view_card(request, card_id):
-    context = RequestContext(request)
-    args = {}
-    card = Card.objects.get(id=card_id)
-    args["card"] = card
-    args.update(gain_userlist(request.user))
-    return render_to_response('cardtravel/cardview.html', args, context)
-
 
 class CardView(DetailView):
     model = Card

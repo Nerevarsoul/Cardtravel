@@ -49,7 +49,7 @@ class WishList(models.Model):
     wishlist = models.ManyToManyField(Card, blank=True, null=True)
 
     def __unicode__(self):
-        return self.user.username + "'s wishlist"
+        return "{} {}".format(self.user.username, "'s wishlist")
 
 
 class Collection(models.Model):
@@ -57,7 +57,7 @@ class Collection(models.Model):
     collectionlist = models.ManyToManyField(Card, blank=True, null=True)
 
     def __unicode__(self):
-        return self.user.username + "'s collection"
+        return "{} {}".format(self.user.username, "'s collection")
 
 
 class Trade(models.Model):
@@ -81,8 +81,17 @@ class Trade(models.Model):
     date = models.DateTimeField(auto_now=True, default = datetime.datetime.now())
 
     def __unicode__(self):
-        return self.card.name + ' ' + self.condition
+        return "{} {}".format(self.card.name, self.condition)
 
     def get_absolute_url(self):
         return "/trades/%i/" % self.id
 
+
+class Comments(models.Model):
+    user = models.ForeignKey(User)
+    trade = models.ForeignKey(Trade)
+    text = models.TextField()
+    time = models.DateTimeField(auto_now=True, default = datetime.datetime.now())
+
+    def __unicode__(self):
+        return "{} {}".format(self.user.name, self.time)
