@@ -22,9 +22,9 @@ This project was created to help Starbucks card collectors exchange their cards.
 
 <h3>Requirements</h3>
 <ul>
-<li>Django==1.6.7</li>
+<li>Django==1.7.7</li>
 <li>Pillow==2.8.1</li>
-<li>South==1.0.2</li>
+<li>django-haystack==2.4.0</li>
 <li>django-debug-toolbar==1.3.0</li>
 <li>sqlparse==0.1.15</li>
 <li>wsgiref==0.1.2</li>
