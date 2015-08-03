@@ -17,7 +17,7 @@ from django.utils.decorators import method_decorator
 
 
 from .forms import UserForm, UserProfileForm, CardForm, EditProfileForm, TradeForm
-from .models import UserProfile, Card, WishList, Collection, Trade
+from .models import UserProfile, Card, WishList, Collection, Trade, Comment
 
 
 def decode_url(cooked_url):
@@ -302,6 +302,7 @@ class TradeView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(TradeView, self).get_context_data(**kwargs)
+        context["comments"] = Comment.objects.filter(trade=self.get_object())
         return context
 
 
@@ -355,6 +356,18 @@ class AddTrade(FormView):
             trade.save()
             return redirect('/index/')
         return render_to_response(self.template_name, {'form': form})
+
+@login_required
+def add_comment(request):
+    context = RequestContext(request)
+    if request.method == "POST":
+        text_comment = request.POST["text_comment"]
+        if text_comment:
+            trade = get_object_or_404(Trade, id=request.POST["trade_id"])
+            user = request.user
+            comment = Comment(user=user, trade= trade, text=text_comment)
+            comment.save()
+    return redirect('view_trade', trade.id)
 
 
 @login_required

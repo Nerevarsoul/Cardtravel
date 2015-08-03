@@ -51,6 +51,9 @@ urlpatterns = patterns('',
         name = 'edit_trade'),
     url(r'^trades/response/(?P<trade_id>\d+)/$', 
         'cardtravel.views.response_trade', name = 'response_trade'),
+
+    url(r'^add_comment/$', 'cardtravel.views.add_comment', 
+        name = 'add_comment'),
 )
 
 handler404 = views.page404

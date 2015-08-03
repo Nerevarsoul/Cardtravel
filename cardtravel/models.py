@@ -87,11 +87,11 @@ class Trade(models.Model):
         return "/trades/%i/" % self.id
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     user = models.ForeignKey(User)
     trade = models.ForeignKey(Trade)
     text = models.TextField()
-    time = models.DateTimeField(auto_now=True, default = datetime.datetime.now())
+    created = models.DateTimeField(auto_now=True, default = datetime.datetime.now())
 
     def __unicode__(self):
         return "{} {}".format(self.user.name, self.time)

@@ -21,7 +21,8 @@ class UserForm(forms.ModelForm):
 
         def clean(self):
             data = self.cleaned_data
-            if "password" in data and "password2" in data and data["password"] != data["password2"]:
+            if "password" in data and "password2" in data and \
+                data["password"] != data["password2"]:
                     raise forms.ValidationError("Passwords must be same")
                            
 
@@ -42,7 +43,8 @@ class EditProfileForm(forms.ModelForm):
         fields = ('picture', 'adress')
 
 class TradeForm(forms.ModelForm):
-    user = forms.ModelChoiceField(queryset = User.objects.all(), widget=forms.HiddenInput())
+    user = forms.ModelChoiceField(queryset = User.objects.all(), 
+                                  widget=forms.HiddenInput())
 
     class Meta:
         model = Trade
