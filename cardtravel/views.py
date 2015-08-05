@@ -265,7 +265,7 @@ def remove_card(request, list_category):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-# View Trade
+# View, Add, Edit and Delete Trade
 class TradesView(ListView):
     model = Trade
     template_name = "cardtravel/trades.html"
@@ -314,6 +314,7 @@ class AddTrade(CreateView):
     fields = ('card', 'condition', 'description', 'face_picture',
                   'reverse_picture', 'addiction_picture1', 
                   'addiction_picture2', 'addiction_picture3')
+    success_message = "Your trade has been added successfully."
 
     def get_context_data(self, **kwargs):
         context = super(AddTrade, self).get_context_data(**kwargs)
@@ -333,6 +334,8 @@ class AddTrade(CreateView):
             if picture in self.request.FILES:
                 setattr(trade, picture, self.request.FILES[picture])
         trade.save()
+        messages.add_message(self.request, messages.SUCCESS, 
+                             self.success_message)
         return redirect('view_tradelist', user.id)
 
 
@@ -342,6 +345,7 @@ class EditTrade(UpdateView):
     fields = ('condition', 'description', 'face_picture',
                   'reverse_picture', 'addiction_picture1', 
                   'addiction_picture2', 'addiction_picture3')
+    success_message = "Your trade has been edited successfully."
 
     def get_context_data(self, **kwargs):
         context = super(EditTrade, self).get_context_data(**kwargs)
@@ -368,6 +372,8 @@ class EditTrade(UpdateView):
             if picture in self.request.FILES:
                 setattr(trade, picture, self.request.FILES[picture])
         trade.save()
+        messages.add_message(self.request, messages.SUCCESS, 
+                             self.success_message)
         return redirect('view_trade', self.kwargs['trade_id'])
 
 
@@ -375,6 +381,7 @@ class DeleteTrade(DeleteView):
     template_name = 'cardtravel/delete_trade.html'
     model = Trade
     success_url = ''
+    success_message = 'Your trade has been deleted successfully.'
 
     def get_context_data(self, **kwargs):
         context = super(DeleteTrade, self).get_context_data(**kwargs)
@@ -383,12 +390,18 @@ class DeleteTrade(DeleteView):
 
     def get_object(self, queryset=None):
         self.object = Trade.objects.get(id=self.kwargs['trade_id'])
-        self.success_url = reverse_lazy('view_tradelist', args=[self.request.user.id])
+        self.success_url = reverse_lazy('view_tradelist', 
+                                         args=[self.request.user.id])
         return self.object
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(DeleteTrade, self).dispatch(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        messages.add_message(self.request, settings.DELETE_MESSAGES, 
+                             self.success_message)
+        return super(DeleteTrade, self).delete(request, *args, **kwargs)
 
 
 @login_required
