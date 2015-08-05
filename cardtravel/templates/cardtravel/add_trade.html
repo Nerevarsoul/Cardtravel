@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load crispy_forms_tags %}
 
 
 {% block content %}
     <div>
         <form enctype="multipart/form-data" action="/trades/add/" method="post">
             {% csrf_token %}
-            {{ form }}
+            {% crispy form %}
+
             
             <input type="submit" value="Add new trade"/>
         </form>
