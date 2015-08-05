@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.context_processors import csrf
-from django.core.paginator import Paginator
+from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404, redirect, render_to_response 
@@ -327,16 +327,11 @@ class AddTrade(CreateView):
         user = self.request.user
         form.instance.user = user
         trade = form
-        if 'face_picture' in self.request.FILES:
-            trade.face_picture = self.request.FILES['face_picture']
-        if 'reverse_picture' in self.request.FILES:
-            trade.reverse_picture = self.request.FILES['reverse_picture']
-        if 'addiction_picture1' in self.request.FILES:
-            trade.addiction_picture1 = self.request.FILES['addiction_picture1']
-        if 'addiction_picture2' in self.request.FILES:
-            trade.addiction_picture2 = self.request.FILES['addiction_picture2']
-        if 'addiction_picture3' in self.request.FILES:
-            trade.addiction_picture3 = self.request.FILES['addiction_picture3']
+        pictures = ('face_picture', 'reverse_picture', 'addiction_picture1', 
+                    'addiction_picture2', 'addiction_picture3')
+        for picture in pictures:
+            if picture in self.request.FILES:
+                setattr(trade, picture, self.request.FILES[picture])
         trade.save()
         return redirect('view_tradelist', user.id)
 
@@ -367,18 +362,33 @@ class EditTrade(UpdateView):
         card = self.object.card
         form.instance.card = card
         trade = form
-        if 'face_picture' in self.request.FILES:
-            trade.face_picture = self.request.FILES['face_picture']
-        if 'reverse_picture' in self.request.FILES:
-            trade.reverse_picture = self.request.FILES['reverse_picture']
-        if 'addiction_picture1' in self.request.FILES:
-            trade.addiction_picture1 = self.request.FILES['addiction_picture1']
-        if 'addiction_picture2' in self.request.FILES:
-            trade.addiction_picture2 = self.request.FILES['addiction_picture2']
-        if 'addiction_picture3' in self.request.FILES:
-            trade.addiction_picture3 = self.request.FILES['addiction_picture3']
+        pictures = ('face_picture', 'reverse_picture', 'addiction_picture1', 
+                    'addiction_picture2', 'addiction_picture3')
+        for picture in pictures:
+            if picture in self.request.FILES:
+                setattr(trade, picture, self.request.FILES[picture])
         trade.save()
         return redirect('view_trade', self.kwargs['trade_id'])
+
+
+class DeleteTrade(DeleteView):
+    template_name = 'cardtravel/delete_trade.html'
+    model = Trade
+    success_url = ''
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteTrade, self).get_context_data(**kwargs)
+        context['trade_id'] = self.kwargs['trade_id']
+        return context
+
+    def get_object(self, queryset=None):
+        self.object = Trade.objects.get(id=self.kwargs['trade_id'])
+        self.success_url = reverse_lazy('view_tradelist', args=[self.request.user.id])
+        return self.object
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(DeleteTrade, self).dispatch(request, *args, **kwargs)
 
 
 @login_required

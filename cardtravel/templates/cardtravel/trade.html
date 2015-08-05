@@ -19,6 +19,7 @@
 				{% endif %}
 				{% if user.id == trade.user.id %}
 					<a href={% url 'edit_trade' trade.id %}>Edit your trade</a>
+					<a href={% url 'delete_trade' trade.id %}>Delete your trade</a>
 				{% else %}
 					<a href={% url 'response_trade' trade.id %}>Response trade</a>
 				{% endif %}
