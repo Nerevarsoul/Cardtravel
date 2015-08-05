@@ -12,12 +12,12 @@ from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 
 from haystack.query import SearchQuerySet
 
-from .forms import UserForm, UserProfileForm, CardForm, EditProfileForm, TradeForm
+from .forms import UserForm, UserProfileForm, CardForm, EditProfileForm
 from .models import UserProfile, Card, WishList, Collection, Trade, Comment
 
 
@@ -148,7 +148,7 @@ def view_users(request):
     return render_to_response('cardtravel/users.html', args, context)
 
 
-class CardMixin(ListView):
+class CardMixin(object):
 
     model = Card
     queryset = Card.objects.all()
@@ -265,6 +265,7 @@ def remove_card(request, list_category):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+# View Trade
 class TradesView(ListView):
     model = Trade
     template_name = "cardtravel/trades.html"
@@ -307,56 +308,78 @@ class TradeView(DetailView):
         return context
 
 
-class AddTrade(FormView):
+class AddTrade(CreateView):
     template_name = 'cardtravel/add_trade.html'
-    form_class = TradeForm
-
-    def get_object(self):
-        if self.kwargs.get('trade_id'):
-            trade = get_object_or_404(Trade, pk=self.kwargs.get('trade_id'))
-        else:
-            trade = None
-        return trade
+    model = Trade
+    fields = ('card', 'condition', 'description', 'face_picture',
+                  'reverse_picture', 'addiction_picture1', 
+                  'addiction_picture2', 'addiction_picture3')
 
     def get_context_data(self, **kwargs):
         context = super(AddTrade, self).get_context_data(**kwargs)
-        context['trade'] = trade = self.get_object()
-        context.update(csrf(request))
         return context
 
-    def get(self, request, *args, **kwargs):
-        trade = self.get_object()
-        initial = {'user': request.user}
-        if trade:
-            initial.update({'card': trade.card,
-                 'condition': trade.condition,
-                 'description': trade.description,
-                 'face_picture': trade.face_picture,
-                 'reverse_picture': trade.reverse_picture, 
-                 'addiction_picture1': trade.addiction_picture1, 
-                 'addiction_picture2': trade.addiction_picture2, 
-                 'addiction_picture3': trade.addiction_picture3
-        })
-        form = self.form_class(initial=initial)
-        return render_to_response(self.template_name, {'form': form})
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AddTrade, self).dispatch(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        trade_form = TradeForm(request.POST, request.FILES)
-        if trade_form.is_valid():
-            trade = trade_form
-            if 'face_picture' in request.FILES:
-                trade.face_picture = request.FILES['face_picture']
-            if 'reverse_picture' in request.FILES:
-                trade.reverse_picture = request.FILES['reverse_picture']
-            if 'addiction_picture1' in request.FILES:
-                trade.addiction_picture1 = request.FILES['addiction_picture1']
-            if 'addiction_picture2' in request.FILES:
-                trade.addiction_picture2 = request.FILES['addiction_picture2']
-            if 'addiction_picture3' in request.FILES:
-                trade.addiction_picture3 = request.FILES['addiction_picture3']
-            trade.save()
-            return redirect('/index/')
-        return render_to_response(self.template_name, {'form': form})
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        trade = form
+        if 'face_picture' in self.request.FILES:
+            trade.face_picture = self.request.FILES['face_picture']
+        if 'reverse_picture' in self.request.FILES:
+            trade.reverse_picture = self.request.FILES['reverse_picture']
+        if 'addiction_picture1' in self.request.FILES:
+            trade.addiction_picture1 = self.request.FILES['addiction_picture1']
+        if 'addiction_picture2' in self.request.FILES:
+            trade.addiction_picture2 = self.request.FILES['addiction_picture2']
+        if 'addiction_picture3' in self.request.FILES:
+            trade.addiction_picture3 = self.request.FILES['addiction_picture3']
+        trade.save()
+        return redirect('view_tradelist', user.id)
+
+
+class EditTrade(UpdateView):
+    template_name = 'cardtravel/edit_trade.html'
+    model = Trade
+    fields = ('condition', 'description', 'face_picture',
+                  'reverse_picture', 'addiction_picture1', 
+                  'addiction_picture2', 'addiction_picture3')
+
+    def get_context_data(self, **kwargs):
+        context = super(EditTrade, self).get_context_data(**kwargs)
+        context['trade_id'] = self.kwargs['trade_id']
+        return context
+
+    def get_object(self, queryset=None):
+        self.object = Trade.objects.get(id=self.kwargs['trade_id'])
+        return self.object
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(EditTrade, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        card = self.object.card
+        form.instance.card = card
+        trade = form
+        if 'face_picture' in self.request.FILES:
+            trade.face_picture = self.request.FILES['face_picture']
+        if 'reverse_picture' in self.request.FILES:
+            trade.reverse_picture = self.request.FILES['reverse_picture']
+        if 'addiction_picture1' in self.request.FILES:
+            trade.addiction_picture1 = self.request.FILES['addiction_picture1']
+        if 'addiction_picture2' in self.request.FILES:
+            trade.addiction_picture2 = self.request.FILES['addiction_picture2']
+        if 'addiction_picture3' in self.request.FILES:
+            trade.addiction_picture3 = self.request.FILES['addiction_picture3']
+        trade.save()
+        return redirect('view_trade', self.kwargs['trade_id'])
+
 
 @login_required
 def add_comment(request):
