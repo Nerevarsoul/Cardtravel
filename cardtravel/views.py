@@ -15,6 +15,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.utils.decorators import method_decorator
 
+from haystack.query import SearchQuerySet
 
 from .forms import UserForm, UserProfileForm, CardForm, EditProfileForm, TradeForm
 from .models import UserProfile, Card, WishList, Collection, Trade, Comment
@@ -368,6 +369,10 @@ def add_comment(request):
             comment = Comment(user=user, trade= trade, text=text_comment)
             comment.save()
     return redirect('view_trade', trade.id)
+
+
+def search_cards(request):
+    cards = SearchQuerySet().autocomplete(content_auto=request.POST.get("search_text", ''))
 
 
 @login_required

@@ -2,11 +2,15 @@
 {% load staticfiles %}
 {% load pagination_tags %}
 
+{% block css %}
+	<link rel="stylesheet" type="text/css" href={% static "css/trade.css" %}/>
+{% endblock %}
+
 {% block content %}
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4">
-				<p><a href={% url 'view_profile' trade.user.id %}>{{trade.user}}</a></p>
+				<p><a href={% url 'view_profile' trade.user.id %}><strong>{{trade.user}}</strong></a></p>
 				<p><a href="{{ trade.get_absolute_url }}">{{trade.card.name}} {{trade.condition}}</a></p>
 				<p>{{trade.date|date:'D d M Y'}}</p>
 				<p>{{trade.description}}</p>
@@ -26,11 +30,20 @@
 	</div>
 	<br>
 
-	{% for comment in comments %}
-		<p>{{comment.text}}</p>
-		<p>{{comment.user.username}}</p>
-		<p>{{comment.created}}</p>
-	{% endfor %}
+	{% autopaginate comments 2%}
+	<div class="all_comments">
+		{% for comment in comments %}
+			<div class="{% cycle 'comment' 'comment_odd' %}">
+				<p>{{comment.created | date:'D d M Y'}} {{comment.user.username}}</p>
+				<p>{{comment.text}}</p>
+				<br>
+			</div>
+		{% empty %}
+    		<p>No comments, yet</p>
+		{% endfor %}
+	</div>
+	
+	{% paginate %}
 
 	<br>
 	<form action={% url 'add_comment' %} method="post">
