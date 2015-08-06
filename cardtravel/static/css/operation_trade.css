@@ -1,0 +1,13 @@
+/* css gor standart form */
+
+.trade label {
+	display: block;
+}
+
+.trade input {
+	display: block;
+}
+
+select, textarea {
+
+}

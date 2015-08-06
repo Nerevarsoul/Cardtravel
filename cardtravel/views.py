@@ -309,7 +309,7 @@ class TradeView(DetailView):
 
 
 class AddTrade(CreateView):
-    template_name = 'cardtravel/add_trade.html'
+    template_name = 'cardtravel/operation_trade.html'
     model = Trade
     fields = ('card', 'condition', 'description', 'face_picture',
                   'reverse_picture', 'addiction_picture1', 
@@ -318,6 +318,10 @@ class AddTrade(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(AddTrade, self).get_context_data(**kwargs)
+        context['trade_class'] = 'trade'
+        context['header'] = "Add trade."
+        context['action'] = reverse_lazy('add_trade')
+        context['value'] = "Add new trade"
         return context
 
     @method_decorator(login_required)
@@ -340,7 +344,7 @@ class AddTrade(CreateView):
 
 
 class EditTrade(UpdateView):
-    template_name = 'cardtravel/edit_trade.html'
+    template_name = 'cardtravel/operation_trade.html'
     model = Trade
     fields = ('condition', 'description', 'face_picture',
                   'reverse_picture', 'addiction_picture1', 
@@ -350,6 +354,10 @@ class EditTrade(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EditTrade, self).get_context_data(**kwargs)
         context['trade_id'] = self.kwargs['trade_id']
+        context['trade_class'] = 'trade'
+        context['header'] = "Edit your trade."
+        context['action'] = reverse_lazy('add_trade')
+        context['value'] = "Edit your trade"
         return context
 
     def get_object(self, queryset=None):
