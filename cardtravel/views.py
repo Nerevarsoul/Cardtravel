@@ -38,8 +38,11 @@ class IndexPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexPageView, self).get_context_data(**kwargs)
-        context['profiles'] = UserProfile.objects.order_by('-id')[:3]
-        context['trades'] = Trade.objects.order_by('-date')[:3]
+        context['profiles'] = UserProfile.objects.order_by('-id')\
+                                         .select_related("user")[:3]
+        context['trades'] = Trade.objects.order_by('-date')\
+                                         .select_related("user")\
+                                         .select_related("card")[:3]
         cards = Card.objects.order_by('-id')[:3]
         context['cards'] = cards
         context.update(gain_userlist(self.request.user))
@@ -276,7 +279,9 @@ class TradesView(ListView):
         return context
 
     def get_queryset(self):
-        self.queryset = Trade.objects.order_by('-date')
+        self.queryset = Trade.objects.order_by('-date')\
+                                     .select_related("user")\
+                                     .select_related("card")
         return self.queryset
 
 
@@ -293,7 +298,9 @@ class TradeListView(ListView):
     def get_queryset(self, **kwargs):
         self.queryset = Trade.objects\
             .filter(user=self.kwargs['user_id'])\
-            .order_by('-date')
+            .order_by('-date')\
+            .select_related("user")\
+            .select_related("card")
         return self.queryset
 
 
@@ -306,6 +313,12 @@ class TradeView(DetailView):
         context = super(TradeView, self).get_context_data(**kwargs)
         context["comments"] = Comment.objects.filter(trade=self.get_object())
         return context
+
+    def get_queryset(self):
+        self.queryset = Trade.objects.filter(id=self.kwargs['pk'])\
+                                     .select_related("user")\
+                                     .select_related("card")
+        return self.queryset
 
 
 class AddTrade(CreateView):
