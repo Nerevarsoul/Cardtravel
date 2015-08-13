@@ -47,62 +47,7 @@
 			</table>
 		</div>
 
-		<div class="col-md-2">
-			<div class="panel-group" id="accordion" >
-
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-              				<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                				Countries:
-              				</a>
-            			</h4>
-            		</div>
-            		<div id="collapseOne" class="panel-collapse collapse">
-					    <ul class="panel-body">
-					        {% for country in countries %}
-								<li><a href={% url 'view_category' 'country' country|encode_url %}>{{country}}</a></li>
-							{% endfor %}
-					    </ul>
-    				</div>
-				</div>
-
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-              				<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                				Series:
-              				</a>
-            			</h4>
-            		</div>
-            		<div id="collapseTwo" class="panel-collapse collapse">
-					    <ul class="panel-body">
-					        {% for seria in series %}
-								<li><a href={% url 'view_category' 'series' seria|encode_url %}>{{seria}}</a></li>
-							{% endfor %}
-					    </ul>
-    				</div>
-				</div>
-
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-              				<a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                				Years:
-              				</a>
-            			</h4>
-            		</div>
-            		<div id="collapseThree" class="panel-collapse collapse">
-					    <ul class="panel-body">
-					        {% for year in years %}
-								<li><a href={% url 'view_category' 'year' year %}>{{year}}</a></li>
-							{% endfor %}
-					    </ul>
-    				</div>
-				</div>
-
-			</div>
-		</div>
+		{% card_sidebar %}
 
 	</div>
 </div>		

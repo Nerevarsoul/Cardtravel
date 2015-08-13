@@ -18,13 +18,13 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
 
-    def get_wishlist(self):
-        wishlist = self.user.wishlist.wishlist.all()
-        return wishlist
+    #def get_wishlist(self):
+        #wishlist = self.user.wishlist.wishlist.all()
+        #return wishlist
 
-    def get_collection(self):
-        collection = self.user.collection.collectionlist.all()
-        return collection
+    #def get_collection(self):
+        #collection = self.user.collection.collectionlist.all()
+        #return collection
 
 
 class Card(models.Model):

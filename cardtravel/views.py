@@ -27,9 +27,8 @@ def decode_url(cooked_url):
 def gain_userlist(user):
     args = {}
     if user.is_authenticated():
-        user_profile = UserProfile.objects.get(user=user)
-        args['user_wishlist'] = user_profile.get_wishlist()
-        args['user_collection'] = user_profile.get_collection()
+        args['user_wishlist'] = user.wishlist.wishlist.all()
+        args['user_collection'] = user.collection.collectionlist.all()
     return args
 
 
@@ -38,13 +37,14 @@ class IndexPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexPageView, self).get_context_data(**kwargs)
+
         context['profiles'] = UserProfile.objects.order_by('-id')\
                                          .select_related("user")[:3]
         context['trades'] = Trade.objects.order_by('-date')\
-                                         .select_related("user")\
-                                         .select_related("card")[:3]
-        cards = Card.objects.order_by('-id')[:3]
+                                         .select_related("user", "card")[:3]
+        cards = Card.objects.order_by('-id').select_related("user", "card")[:3]
         context['cards'] = cards
+
         context.update(gain_userlist(self.request.user))
         return context
 
@@ -147,7 +147,7 @@ def view_profile(request, user_id):
 def view_users(request):
     context = RequestContext(request)
     args = {}
-    args['profiles'] = UserProfile.objects.all()
+    args['profiles'] = UserProfile.objects.all().select_related("user")
     return render_to_response('cardtravel/users.html', args, context)
 
 
@@ -158,23 +158,6 @@ class CardMixin(object):
     
     def get_context_data(self, **kwargs):
         context = super(CardMixin, self).get_context_data(**kwargs)
-        cards = Card.objects.all()
-        countries = []
-        series = []
-        years = []
-        for card in cards:
-            if card.country not in countries:
-                countries.append(card.country)
-            if card.series not in series:
-                series.append(card.series)
-            if card.issued_on not in years:
-                years.append(card.issued_on)
-        countries.sort()
-        series.sort()
-        years.sort()
-        context["countries"] = countries
-        context["series"] = series
-        context["years"] = years
         context['cards'] = self.queryset
         context.update(gain_userlist(self.request.user))
         return context
@@ -280,8 +263,7 @@ class TradesView(ListView):
 
     def get_queryset(self):
         self.queryset = Trade.objects.order_by('-date')\
-                                     .select_related("user")\
-                                     .select_related("card")
+                                     .select_related("user", "card")
         return self.queryset
 
 
@@ -299,8 +281,7 @@ class TradeListView(ListView):
         self.queryset = Trade.objects\
             .filter(user=self.kwargs['user_id'])\
             .order_by('-date')\
-            .select_related("user")\
-            .select_related("card")
+            .select_related("user", "card")
         return self.queryset
 
 
@@ -316,8 +297,7 @@ class TradeView(DetailView):
 
     def get_queryset(self):
         self.queryset = Trade.objects.filter(id=self.kwargs['pk'])\
-                                     .select_related("user")\
-                                     .select_related("card")
+                                     .select_related("user", "card")
         return self.queryset
 
 
