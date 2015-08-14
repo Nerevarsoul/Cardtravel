@@ -18,7 +18,7 @@ from django.utils.decorators import method_decorator
 from haystack.query import SearchQuerySet
 
 from .forms import UserForm, UserProfileForm, CardForm, EditProfileForm
-from .models import UserProfile, Card, Trade, Comment #WishList, Collection, 
+from .models import UserProfile, Card, Trade, Comment
 
 
 def decode_url(cooked_url):
@@ -228,11 +228,9 @@ def add_card(request, list_category):
         card = Card.objects.get(id=card_id)
         profile = UserProfile.objects.get(user=request.user)
         if list_category == 'wishlist':
-            cards = profile.wishlist.all()
-            cards.add(card)
+            profile.wishlist.add(card)
         elif list_category == 'collection':
-            cards = profile.collection.all()
-            cards.add(card)
+            profile.collection.add(card)
         messages.add_message(request, messages.SUCCESS, 'You add card')
     return redirect(request.META.get('HTTP_REFERER'))
 
@@ -243,14 +241,12 @@ def remove_card(request, list_category):
         card = Card.objects.get(id=card_id)
         profile = UserProfile.objects.get(user=request.user)
         if list_category == 'wishlist':
-            cards = profile.wishlist.all()
-            cards.remove(card)
+            profile.wishlist.remove(card)
         elif list_category == 'collection':
-            cards = profile.collection.all()
-            cards.remove(card)
+            profile.collection.remove(card)
         messages.add_message(request, 
-            settings.DELETE_MESSAGES, 
-            'You delete card')
+                             settings.DELETE_MESSAGES, 
+                             'You delete card')
     return redirect(request.META.get('HTTP_REFERER'))
 
 

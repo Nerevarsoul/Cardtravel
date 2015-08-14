@@ -1,6 +1,6 @@
 <div class="operation">
 	{% if card in user_wishlist %}
-		<form action="" ={% url 'remove_card' 'wishlist'%} method="post">
+		<form action={% url 'remove_card' 'wishlist'%} method="post">
 			{% csrf_token %}
 			<input name="card_id" type="hidden" value="{{card.id}}">
 			<button type="submit">

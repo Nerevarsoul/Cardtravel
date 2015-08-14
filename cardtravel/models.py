@@ -37,29 +37,6 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
 
-    #def get_wishlist(self):
-        #wishlist = self.user.wishlist.wishlist.all()
-        #return wishlist
-
-    #def get_collection(self):
-        #collection = self.user.collection.collectionlist.all()
-        #return collection
-
-#class WishList(models.Model):
-    #user = models.OneToOneField(User)
-    #wishlist = models.ManyToManyField(Card, blank=True, null=True)
-
-    #def __unicode__(self):
-        #return "{} {}".format(self.user.username, "'s wishlist")
-
-
-#class Collection(models.Model):
-    #user = models.OneToOneField(User)
-    #collectionlist = models.ManyToManyField(Card, blank=True, null=True)
-
-    #def __unicode__(self):
-        #return "{} {}".format(self.user.username, "'s collection")
-
 
 class Trade(models.Model):
 
