@@ -29,7 +29,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('picture', 'adress')
+        fields = ('picture', 'address')
 
 class CardForm(forms.ModelForm):
     class Meta:
@@ -40,4 +40,4 @@ class EditProfileForm(forms.ModelForm):
     email = forms.EmailField()
     class Meta:
         model = UserProfile
-        fields = ('picture', 'adress')
+        fields = ('picture', 'address')

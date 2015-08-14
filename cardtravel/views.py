@@ -18,7 +18,7 @@ from django.utils.decorators import method_decorator
 from haystack.query import SearchQuerySet
 
 from .forms import UserForm, UserProfileForm, CardForm, EditProfileForm
-from .models import UserProfile, Card, WishList, Collection, Trade, Comment
+from .models import UserProfile, Card, Trade, Comment #WishList, Collection, 
 
 
 def decode_url(cooked_url):
@@ -27,8 +27,9 @@ def decode_url(cooked_url):
 def gain_userlist(user):
     args = {}
     if user.is_authenticated():
-        args['user_wishlist'] = user.wishlist.wishlist.all()
-        args['user_collection'] = user.collection.collectionlist.all()
+        profile = UserProfile.objects.get(user=user)
+        args['user_wishlist'] = profile.wishlist.all()
+        args['user_collection'] = profile.collection.all()
     return args
 
 
@@ -64,9 +65,9 @@ def register(request):
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
             profile.save()
-            wishlist = WishList(user=user)
+            wishlist = WishList(profile=profile)
             wishlist.save()
-            collection = Collection(user=user)
+            collection = Collection(profile=profile)
             collection.save()
             registered = True
         else:
@@ -130,8 +131,8 @@ def view_profile(request, user_id):
     user_profile = UserProfile.objects.get(user=user_id)
     args['profiles'] = user_profile
     args['users'] = User.objects.get(id=user_id)
-    wishlist = user_profile.get_wishlist()
-    collection = user_profile.get_collection()
+    wishlist = user_profile.wishlist.all()
+    collection = user_profile.collection.all()
     if request.user.id != user_id:
         args.update(gain_userlist(request.user))
     else:
@@ -214,9 +215,9 @@ class CardListView(ListView):
         user_profile = UserProfile.objects.get(user=self.kwargs['user_id'])
         list_category = self.kwargs['list_category']
         if list_category == 'wishlist':
-            self.queryset = user_profile.get_wishlist()
+            self.queryset = user_profile.wishlist.all()
         elif list_category == 'collection':
-            self.queryset = user_profile.get_collection()
+            self.queryset = user_profile.collection.all()
         return self.queryset
 
 
@@ -225,11 +226,12 @@ def add_card(request, list_category):
     if request.method == "POST":
         card_id = int(request.POST['card_id'])
         card = Card.objects.get(id=card_id)
+        profile = UserProfile.objects.get(user=request.user)
         if list_category == 'wishlist':
-            cards = WishList.objects.get(user=request.user).wishlist
+            cards = profile.wishlist.all()
             cards.add(card)
         elif list_category == 'collection':
-            cards = Collection.objects.get(user=request.user).collectionlist
+            cards = profile.collection.all()
             cards.add(card)
         messages.add_message(request, messages.SUCCESS, 'You add card')
     return redirect(request.META.get('HTTP_REFERER'))
@@ -239,11 +241,12 @@ def remove_card(request, list_category):
     if request.method == "POST":
         card_id = int(request.POST['card_id'])
         card = Card.objects.get(id=card_id)
+        profile = UserProfile.objects.get(user=request.user)
         if list_category == 'wishlist':
-            cards = WishList.objects.get(user=request.user).wishlist
+            cards = profile.wishlist.all()
             cards.remove(card)
         elif list_category == 'collection':
-            cards = Collection.objects.get(user=request.user).collectionlist
+            cards = profile.collection.all()
             cards.remove(card)
         messages.add_message(request, 
             settings.DELETE_MESSAGES, 

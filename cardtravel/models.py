@@ -9,24 +9,6 @@ def encode_url(raw_url):
 
 
 # Create your models here.
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, related_name="profile")
-
-    picture = models.ImageField(upload_to='profile_images', blank=True)
-    adress = models.TextField(blank=True)
-
-    def __unicode__(self):
-        return self.user.username
-
-    #def get_wishlist(self):
-        #wishlist = self.user.wishlist.wishlist.all()
-        #return wishlist
-
-    #def get_collection(self):
-        #collection = self.user.collection.collectionlist.all()
-        #return collection
-
-
 class Card(models.Model):
     name = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
@@ -44,20 +26,39 @@ class Card(models.Model):
         return "/cards/%i/" % self.id
 
 
-class WishList(models.Model):
-    user = models.OneToOneField(User)
-    wishlist = models.ManyToManyField(Card, blank=True, null=True)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, related_name="profile")
+
+    picture = models.ImageField(upload_to='profile_images', blank=True)
+    address = models.TextField(blank=True)
+    wishlist = models.ManyToManyField(Card, related_name="wishlist", blank=True, null=True)
+    collection = models.ManyToManyField(Card, related_name="collection", blank=True, null=True)
 
     def __unicode__(self):
-        return "{} {}".format(self.user.username, "'s wishlist")
+        return self.user.username
+
+    #def get_wishlist(self):
+        #wishlist = self.user.wishlist.wishlist.all()
+        #return wishlist
+
+    #def get_collection(self):
+        #collection = self.user.collection.collectionlist.all()
+        #return collection
+
+#class WishList(models.Model):
+    #user = models.OneToOneField(User)
+    #wishlist = models.ManyToManyField(Card, blank=True, null=True)
+
+    #def __unicode__(self):
+        #return "{} {}".format(self.user.username, "'s wishlist")
 
 
-class Collection(models.Model):
-    user = models.OneToOneField(User)
-    collectionlist = models.ManyToManyField(Card, blank=True, null=True)
+#class Collection(models.Model):
+    #user = models.OneToOneField(User)
+    #collectionlist = models.ManyToManyField(Card, blank=True, null=True)
 
-    def __unicode__(self):
-        return "{} {}".format(self.user.username, "'s collection")
+    #def __unicode__(self):
+        #return "{} {}".format(self.user.username, "'s collection")
 
 
 class Trade(models.Model):
