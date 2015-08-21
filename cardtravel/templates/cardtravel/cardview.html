@@ -16,8 +16,9 @@
 			<a href={% url 'view_category' 'year' card.issued_on %}>{{ card.issued_on }}</a>
 		</p>
 		<p><strong>description: </strong>{{ card.description }}</p>
+		<p><a href={% url "view_trade_card" card.id %}>View trade</a></p>
 		<img src={{card.face_picture.url}} height="200">
-		{% include 'cardtravel/preview/add_remove.html' %}
+		{% include "cardtravel/preview/add_remove.html" %}
 		<img src={{card.reverse_picture.url}} height="200">
 	</div>
 {% endblock content %}

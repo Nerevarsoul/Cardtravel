@@ -4,7 +4,8 @@ from django.contrib.sitemaps.views import sitemap
 
 from cardtravel import views
 from .views import IndexPageView
-from .views import TradesView, TradeView, TradeListView, AddTrade, EditTrade, DeleteTrade
+from .views import TradesView, TradeView, TradeListView, TradeCardView
+from .views import AddTrade, EditTrade, DeleteTrade
 from .views import CardsView, CardCategoryView, CardListView, CardView
 from .sitemaps import CardSitemap, TradeSitemap
 
@@ -53,6 +54,8 @@ urlpatterns = patterns('',
         'cardtravel.views.response_trade', name = 'response_trade'),
     url(r'^trades/delete/(?P<trade_id>\d+)/$', DeleteTrade.as_view(), 
         name = 'delete_trade'),
+    url(r'^trades/card/(?P<card_name>\d+)/$', TradeCardView.as_view(),
+        name = 'view_trade_card'),
 
     url(r'^add_comment/$', 'cardtravel.views.add_comment', 
         name = 'add_comment'),

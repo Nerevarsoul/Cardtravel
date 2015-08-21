@@ -300,6 +300,21 @@ class TradeView(DetailView):
         return self.queryset
 
 
+class TradeCardView(ListView):
+    model = Trade
+    template_name = "cardtravel/tradelist.html"
+    context_object_name = 'trades'
+
+    def get_context_data(self, **kwargs):
+        context = super(TradeCardView, self).get_context_data(**kwargs)
+        return context
+
+    def get_queryset(self):
+        self.queryset = Trade.objects.filter(card=self.kwargs['card_name'])\
+                                     .select_related("user", "card")
+        return self.queryset
+
+
 class AddTrade(CreateView):
     template_name = 'cardtravel/operation_trade.html'
     model = Trade
