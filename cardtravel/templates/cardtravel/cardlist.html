@@ -4,19 +4,19 @@
 
 {% block content %}
 	
-<p><strong>{{users.username}} {{list_category}}:</strong></p>
+	<p><strong>{{users.username}} {{list_category}}:</strong></p>
 
-<div class="container">
-    <div class="row">
-    	{% autopaginate cards %}
-		{% for card in cards %}
-			<div class="col-md-6">
-			{% include 'cardtravel/preview/cards.html' %}
-			</div>
-		{% endfor %}
+	<div class="container">
+	    <div class="row">
+	    	{% autopaginate cards %}
+			{% for card in cards %}
+				<div class="col-md-6">
+				{% include 'cardtravel/preview/cards.html' %}
+				</div>
+			{% endfor %}
+		</div>
 	</div>
-</div>
 
-{% paginate %}
+	{% paginate %}
 
-{% endblock %}
+{% endblock content %}

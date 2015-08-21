@@ -128,9 +128,8 @@ def logout(request):
 def view_profile(request, user_id):
     context = RequestContext(request)
     args = {}
-    user_profile = UserProfile.objects.get(user=user_id)
+    user_profile = UserProfile.objects.filter(user=user_id).select_related("user")[0]
     args['profiles'] = user_profile
-    args['users'] = User.objects.get(id=user_id)
     wishlist = user_profile.wishlist.all()
     collection = user_profile.collection.all()
     if request.user.id != user_id:
@@ -141,7 +140,7 @@ def view_profile(request, user_id):
 
     args['wishlist'] = wishlist[0:3]
     args['collection'] = collection[0:3]
-    args['trades'] = Trade.objects.filter(user=user_id)[0:3]
+    args['trades'] = Trade.objects.filter(user=user_id).select_related("user", "card")[:3]
 
     return render_to_response('cardtravel/profile.html', args, context)
 
@@ -261,7 +260,8 @@ class TradesView(ListView):
         return context
 
     def get_queryset(self):
-        self.queryset = Trade.objects.order_by('-date')\
+        self.queryset = Trade.objects.order_by("-date")\
+                                     .filter(status="active")\
                                      .select_related("user", "card")
         return self.queryset
 

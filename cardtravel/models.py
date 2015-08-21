@@ -51,6 +51,7 @@ class Trade(models.Model):
     card = models.ForeignKey(Card)
     condition = models.CharField(choices=CONDITION, max_length=20)
     description = models.TextField(blank=True)
+    status = models.CharField(max_length=20, default='active')
     face_picture = models.ImageField(upload_to='trade_images')
     reverse_picture = models.ImageField(upload_to='trade_images', blank=True, default=None)
     addiction_picture1 = models.ImageField(upload_to='trade_images', blank=True, default=None)

@@ -3,17 +3,18 @@
 {% load pagination_tags %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        {% autopaginate trades%}
-		{% for trade in trades %}
-			<div class="col-md-6">
-				{% include 'cardtravel/preview/trades.html' %}
-			</div>
-		{% endfor %}
+
+	<div class="container">
+	    <div class="row">
+	        {% autopaginate trades%}
+			{% for trade in trades %}
+				<div class="col-md-6">
+					{% include 'cardtravel/preview/trades.html' %}
+				</div>
+			{% endfor %}
+		</div>
 	</div>
-</div>
 
-{% paginate %}
+	{% paginate %}
 
-{% endblock %}
+{% endblock content %}
