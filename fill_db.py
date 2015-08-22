@@ -78,5 +78,5 @@ if __name__ == "__main__":
 
     from mysite.settings import MEDIA_ROOT
 
-    #create_users()
+    create_users()
     create_cards()

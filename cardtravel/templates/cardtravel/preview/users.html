@@ -1,5 +1,7 @@
 
-<img src="{{profile.picture.url}}">
+{% if profile.picture %}
+    <img src="{{profile.picture.url}}">
+{% endif %}
 <p><a href={% url 'view_profile' profile.user.id %}>{{ profile.user.username}}</a></p>
 {% if profile.user.get_full_name %}
 	<p>{{ profile.user.get_full_name }}</p>

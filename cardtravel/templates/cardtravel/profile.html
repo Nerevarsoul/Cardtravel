@@ -10,7 +10,9 @@
         <div class="row">
         	<div class="col-md-4 user">
 				<h1>{{profiles.user.username}}</h1>
-				<img src="{{profiles.picture.url}}">
+				{% if profiles.picture %}
+					<img src="{{profiles.picture.url}}">
+				{% endif %}
 				{% if user.id == profiles.user.id %}
 					<p><a href={% url 'edit_profile' %}>Edit your profile</a></p>
 					<p><a href={% url 'postman_inbox' %}>View inbox</a></p>
