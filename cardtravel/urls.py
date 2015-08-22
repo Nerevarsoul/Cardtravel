@@ -24,10 +24,11 @@ urlpatterns = patterns('',
     url(r'^login/$', 'cardtravel.views.login', name = 'login'),
     url(r'^register/$', 'cardtravel.views.register', name = 'register'),
     url(r'^logout/$', 'cardtravel.views.logout', name = 'logout'),
-    url(r'^edit/$', 'cardtravel.views.edit_profile', name = 'edit_profile'),
-
+    
     url(r'^profile/(?P<user_id>\d+)/$', 'cardtravel.views.view_profile', 
         name = 'view_profile'),
+    url(r'^edit_profile/$', 'cardtravel.views.edit_profile', 
+        name = 'edit_profile'),
     url(r'^profile/$', 'cardtravel.views.view_users', name = 'users'),
     url(r'^profile/(?P<user_id>\d+)/(?P<list_category>\w+)/$', 
          CardListView.as_view(), name = 'view_cardlist'),
