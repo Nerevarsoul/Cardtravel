@@ -51,6 +51,12 @@ class URLTests(TestCase):
                                        catalog_codes=catalog_codes, 
                                        face_picture=File(face_picture),
                                        reverse_picture=File(reverse_picture))
+
+        card = Card.objects.get(id=1)
+        face_picture = open(os.path.join(MEDIA_ROOT, 'cards', 
+                                             card.name + '.jpg'))
+        Trade.objects.get_or_create(user=user, card=card, condition="mint",
+                                    face_picture=File(face_picture))
     
     def test_index_page(self):
         url = reverse('index')
@@ -105,5 +111,26 @@ class URLTests(TestCase):
     def test_view_category_page(self):
         url = reverse('view_category', kwargs={"category": "country", 
                                                "category_url": 'Russia'})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    # testing trades urls
+    def test_trades_page(self):
+        url = reverse('trades')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_trade_page(self):
+        url = reverse('view_trade', args=[1])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_tradelist_page(self):
+        url = reverse('view_tradelist', args=[1])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_trade_card_page(self):
+        url = reverse('view_trade_card', args=[1])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
