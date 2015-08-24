@@ -10,22 +10,98 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4">
+
 				<p><a href={% url 'view_profile' trade.user.id %}><strong>{{trade.user}}</strong></a></p>
 				<p><a href="{{ trade.get_absolute_url }}">{{trade.card.name}} {{trade.condition}}</a></p>
 				<p>{{trade.date|date:'D d M Y'}}</p>
 				<p>{{trade.description}}</p>
-				{% if trade.reverse_picture %}
-					<img src="{{trade.reverse_picture.url}}" height="400">
-				{% endif %}
+				
 				{% if user.id == trade.user.id %}
-					<a href={% url 'edit_trade' trade.id %}>Edit your trade</a>
-					<a href={% url 'delete_trade' trade.id %}>Delete your trade</a>
+					<li><a class="btn btn-primary" href={% url 'edit_trade' trade.id %}>Edit your trade</a></li>
+					<li><a class="btn btn-danger" href={% url 'delete_trade' trade.id %}>Delete your trade</a></li>
 				{% else %}
 					<a href={% url 'response_trade' trade.id %}>Response trade</a>
 				{% endif %}
+
 			</div>
 			<div class="col-md-8">
-				<img src="{{trade.face_picture.url}}" height="400">
+
+				<div id="carousel" class="carousel slide">
+			        <!-- Indicators -->
+			        <ol class="carousel-indicators">
+			            <li data-target="#carousel" data-slide-to="0" class="active"></li>
+			            {% if trade.reverse_picture %}
+			            	<li data-target="#carousel" data-slide-to="1"></li>
+			            {% endif %}
+			            {% if trade.addiction_picture1 %}
+			            	<li data-target="#carousel" data-slide-to="2"></li>
+			            {% endif %}
+			            {% if trade.addiction_picture2 %}
+			            	<li data-target="#carousel" data-slide-to="3"></li>
+			            {% endif %}
+			            {% if trade.addiction_picture3 %}
+			            	<li data-target="#carousel" data-slide-to="4"></li>
+			            {% endif %}
+			        </ol>
+
+			        <!-- Wrapper for slides -->
+			        <div class="carousel-inner" role="listbox">
+
+			            <div class="item active">
+			                <img src="{{trade.face_picture.url}}" height="400">
+			                <div class="carousel-caption">
+			                    <h3>Face_picture</h3>
+			                </div>
+			            </div>
+
+			            {% if trade.reverse_picture %}
+				            <div class="item">
+				                <img src="{{trade.reverse_picture.url}}" height="400">
+				                <div class="carousel-caption">
+				                    <h3>Reverse_picture</h3>
+				                </div>   
+				            </div>
+				        {% endif %}
+
+				        {% if trade.addiction_picture1 %}
+				            <div class="item">
+				                <img src="{{trade.addiction_picture1.url}}" height="400">
+				                <div class="carousel-caption">
+				                    <h3>Addiction_picture1</h3>
+				                </div>   
+				            </div>
+				        {% endif %}
+
+				        {% if trade.addiction_picture2 %}
+				            <div class="item">
+				                <img src="{{trade.addiction_picture2.url}}" height="400">
+				                <div class="carousel-caption">
+				                    <h3>Addiction_picture2</h3>
+				                </div>   
+				            </div>
+				        {% endif %}
+
+				        {% if trade.addiction_picture3 %}
+				            <div class="item">
+				                <img src="{{trade.addiction_picture3.url}}" height="400">
+				                <div class="carousel-caption">
+				                    <h3>Addiction_picture3</h3>
+				                </div>   
+				            </div>
+				        {% endif %}
+
+        			</div>
+
+			        <!-- Controls -->
+			        <a href="#carousel" class="left carousel-control" data-slide="prev" role="button">
+			            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			        </a>
+			        <a href="#carousel" class="right carousel-control" data-slide="next" role="button">
+			            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			        </a>
+
+   				</div>
+
 			</div>	
 		</div>
 	</div>
