@@ -9,17 +9,26 @@
 	<div class="container">
         <div class="row">
         	<div class="col-md-4 user">
+
 				<h1>{{profiles.user.username}}</h1>
 				{% if profiles.picture %}
 					<img src="{{profiles.picture.url}}">
 				{% endif %}
+
 				{% if user.id == profiles.user.id %}
-					<p><a href={% url 'edit_profile' %}>Edit your profile</a></p>
-					<p><a href={% url 'postman_inbox' %}>View inbox</a></p>
+					<li><a href={% url 'edit_profile' %}>Edit your profile</a></li>
+					<a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href = "#">Messages <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href={% url 'postman_inbox' %}>View inbox</a></li>
+						<li><a href={% url 'postman_sent' %}>View sent</a></li>
+						<li><a href={% url 'postman_archives' %}>View archives</a></li>
+					</ul>
 				{% else %}
 					<p><a href={% url 'postman_write' profiles.user %}>Write message</a></p>
 				{% endif %}
+
 			</div>
+
 			<div class="col-md-8">
 				<p><strong>email: </strong>{{ profiles.user.email }}</p>
 				<p><strong>address: </strong>{{ profiles.adress }}</p>
@@ -31,10 +40,13 @@
 				<p><strong>date joined: </strong>{{ profiles.user.date_joined }}</p>
 					
 			</div>
+
 		</div>
+
 			<hr>
 		<div class="container">
 		<div class="row">
+
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 wishlist">
 				<p><strong>{{profiles.user.username}} 
 					<a href={% url 'view_cardlist' profiles.user.id 'wishlist' %}>wishlist</a>:
@@ -44,6 +56,7 @@
 					<br>
 				{% endfor %}
 			</div>
+
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 collection">
 				<p><strong>{{profiles.user.username}} 
 					<a href={% url 'view_cardlist' profiles.user.id 'collection' %}>collectionlist</a>:
@@ -53,6 +66,7 @@
 					<br>
 				{% endfor %}
 			</div>
+
 			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
 				<p><strong>
 					{{profiles.user.username}} <a href={% url 'view_tradelist' profiles.user.id %}>tradelist</a>:
@@ -62,8 +76,9 @@
 					<br>
 				{% endfor %}
 			</div>
+
 		</div>
-		</div>
+	</div>
 
 
 {% endblock content%}

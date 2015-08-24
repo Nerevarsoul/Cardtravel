@@ -57,7 +57,7 @@ MIDDLEWARE_CLASSES = (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -171,6 +171,8 @@ POSTMAN_QUICKREPLY_QUOTE_BODY = True  # default is False
     # 'arg_name': '',  # default is 'channel'
     # 'arg_default': 'postman_friends',  # no default, mandatory to enable the feature
 # }  # default is {}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #http://django-crispy-forms.readthedocs.org/en/latest/index.html
 #CRISPY_TEMPLATE_PACK = 'bootstrap3'
