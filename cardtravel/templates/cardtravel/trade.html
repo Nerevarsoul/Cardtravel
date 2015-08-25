@@ -17,8 +17,8 @@
 				<p>{{trade.description}}</p>
 				
 				{% if user.id == trade.user.id %}
-					<li><a class="btn btn-primary" href={% url 'edit_trade' trade.id %}>Edit your trade</a></li>
-					<li><a class="btn btn-danger" href={% url 'delete_trade' trade.id %}>Delete your trade</a></li>
+					<a class="btn btn-primary btn-block" href={% url 'edit_trade' trade.id %}>Edit your trade</a>
+					<a class="btn btn-danger btn-block" href={% url 'delete_trade' trade.id %}>Delete your trade</a>
 				{% else %}
 					<a href={% url 'response_trade' trade.id %}>Response trade</a>
 				{% endif %}

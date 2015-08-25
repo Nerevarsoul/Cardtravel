@@ -17,7 +17,7 @@ from django.utils.decorators import method_decorator
 
 from haystack.query import SearchQuerySet
 
-from .forms import UserForm, UserProfileForm, CardForm, EditProfileForm
+from .forms import UserForm, CardForm, EditProfileForm
 from .models import UserProfile, Card, Trade, Comment
 
 
@@ -55,29 +55,22 @@ def register(request):
     registered = False
     if request.method == "POST":
         user_form = UserForm(data=request.POST)
-        profile_form = UserProfileForm(data=request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             user = user_form.save()
             user.set_password(user.password)
             user.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
+            profile = UserProfile(user=user, address=request.POST['address'])
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
             profile.save()
-            wishlist = WishList(profile=profile)
-            wishlist.save()
-            collection = Collection(profile=profile)
-            collection.save()
             registered = True
+            return redirect('index')
         else:
-            print user_form.errors, profile_form.errors
+            print user_form.errors
     else:
         user_form = UserForm()
-        profile_form = UserProfileForm()
     return render_to_response('cardtravel/register.html', 
-        {'user_form': user_form, 
-        'profile_form': profile_form, 
+        {'form': user_form,  
         'registered': registered}, context)
 
 @login_required

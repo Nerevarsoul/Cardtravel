@@ -49,7 +49,7 @@ INSTALLED_APPS = (
     #http://django-postman.readthedocs.org/en/latest/index.html
     'postman',
     #http://django-crispy-forms.readthedocs.org/en/latest/index.html
-    #'crispy_forms',
+    'crispy_forms',
     'cardtravel',
 )
 
@@ -175,4 +175,4 @@ POSTMAN_QUICKREPLY_QUOTE_BODY = True  # default is False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #http://django-crispy-forms.readthedocs.org/en/latest/index.html
-#CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
