@@ -81,7 +81,8 @@ def edit_profile(request):
     if request.method == "POST":
         editprofile_form = EditProfileForm(data=request.POST)
         if editprofile_form.is_valid() and editprofile_form.has_changed():
-            user.username = request.POST['username']
+            user.first_name = request.POST['first_name']
+            user.last_name = request.POST['last_name']
             user.email = request.POST['email']
             user.save()
             profile.address = request.POST['address']
@@ -97,7 +98,7 @@ def edit_profile(request):
                                             'address': profile.address,
                                             'picture': profile.picture})
     return render_to_response('cardtravel/edit_profile.html', 
-        {'editprofile_form': editprofile_form}, context)        
+        {'form': editprofile_form}, context)        
 
 def login(request):
     context = RequestContext(request)
