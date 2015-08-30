@@ -17,7 +17,7 @@ from django.utils.decorators import method_decorator
 
 from haystack.query import SearchQuerySet
 
-from .forms import UserForm, CardForm, EditProfileForm
+from .forms import UserForm, CardForm, EditProfileForm, LoginForm
 from .models import UserProfile, Card, Trade, Comment
 
 
@@ -93,7 +93,8 @@ def edit_profile(request):
             editprofile_form.errors
     else:
         editprofile_form = EditProfileForm(initial={
-                                            'username': user.username, 
+                                            'first_name': user.first_name, 
+                                            'last_name': user.last_name,
                                             'email': user.email,
                                             'address': profile.address,
                                             'picture': profile.picture})
@@ -102,6 +103,7 @@ def edit_profile(request):
 
 def login(request):
     context = RequestContext(request)
+    login_form = LoginForm()
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -110,9 +112,12 @@ def login(request):
             auth.login(request, user)
             return redirect('view_profile', user.id)
         else:
-            return HttpResponse("Your Rango account is disabled.")
+            errors = "Login or password are wrong."
+            return render_to_response('cardtravel/login.html', 
+                                  {'form': login_form, "errors": errors}, context)
     else:
-        return render_to_response('cardtravel/login.html', {}, context)
+        return render_to_response('cardtravel/login.html', 
+                                  {'form': login_form}, context)
 
 def logout(request):
     auth.logout(request)

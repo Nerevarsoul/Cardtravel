@@ -48,6 +48,21 @@ class UserForm(forms.ModelForm):
                 raise forms.ValidationError("Passwords must be same")
                            
 
+class LoginForm(forms.Form):
+
+    username = forms.CharField(required=True)
+    password = forms.CharField(required=True, widget=forms.PasswordInput())
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'form-inline'
+        button = Button('send_button', 'Sign in')
+        button.input_type = 'submit'
+        button.field_classes = 'btn btn-success form-control'
+        self.helper.add_input(button)
+
+
 class CardForm(forms.ModelForm):
     class Meta:
         model = Card
