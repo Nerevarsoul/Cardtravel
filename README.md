@@ -13,6 +13,7 @@ This project was created to help Starbucks card collectors exchange their cards.
 
 <h3>Planned features</h3>
 <ul>
+<li>SocialAuth</li>
 <li>Settings timezone</li>
 <li>Email confirmation</li>
 <li>Performing an exchange request</li>
@@ -24,12 +25,14 @@ This project was created to help Starbucks card collectors exchange their cards.
 <ul>
 <li>Django==1.7.7</li>
 <li>Pillow==2.8.1</li>
+<li>Whoosh==2.7.0</li>
 <li>django-haystack==2.4.0</li>
 <li>django-debug-toolbar==1.3.0</li>
 <li>sqlparse==0.1.15</li>
 <li>wsgiref==0.1.2</li>
 <li>django-pagination==1.0.7</li>
 <li>django-postman==3.2.2</li>
+<li>django-crispy-forms==1.4.0</li>
 <li>pytz==2015.4</li>
 </ul>
 
