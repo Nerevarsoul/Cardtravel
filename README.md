@@ -13,6 +13,7 @@ This project was created to help Starbucks card collectors exchange their cards.
 
 <h3>Planned features</h3>
 <ul>
+<li>SocialAuth</li>
 <li>Settings timezone</li>
 <li>Email confirmation</li>
 <li>Performing an exchange request</li>
