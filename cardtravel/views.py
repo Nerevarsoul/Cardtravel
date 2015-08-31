@@ -17,7 +17,7 @@ from django.utils.decorators import method_decorator
 
 from haystack.query import SearchQuerySet
 
-from .forms import UserForm, CardForm, EditProfileForm, LoginForm
+from .forms import UserForm, CardForm, EditProfileForm, LoginForm, ChangePasswordForm
 from .models import UserProfile, Card, Trade, Comment
 
 
@@ -73,6 +73,7 @@ def register(request):
         {'form': user_form,  
         'registered': registered}, context)
 
+
 @login_required
 def edit_profile(request):
     context = RequestContext(request)
@@ -99,7 +100,24 @@ def edit_profile(request):
                                             'address': profile.address,
                                             'picture': profile.picture})
     return render_to_response('cardtravel/edit_profile.html', 
-        {'form': editprofile_form}, context)        
+        {'form': editprofile_form}, context)
+
+
+def change_password(request):
+    context = RequestContext(request)
+    user = request.user
+    if request.method == "POST":
+        password_form = ChangePasswordForm(data=request.POST)
+        if password_form.is_valid() and request.POST['password'] == user.password:
+            user.set_password(request.POST['new_password'])
+            user.save()
+        else:
+            password_form.errors
+    else:
+        password_form = ChangePasswordForm
+        return render_to_response('cardtravel/edit_profile.html', 
+                                  {'form': password_form}, context) 
+        
 
 def login(request):
     context = RequestContext(request)
@@ -119,9 +137,11 @@ def login(request):
         return render_to_response('cardtravel/login.html', 
                                   {'form': login_form}, context)
 
+
 def logout(request):
     auth.logout(request)
     return redirect('/index/')
+
 
 @login_required
 def view_profile(request, user_id):

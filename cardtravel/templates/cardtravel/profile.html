@@ -17,6 +17,7 @@
 
 				{% if user.id == profiles.user.id %}
 					<li><a href={% url 'edit_profile' %}>Edit your profile</a></li>
+					<li><a href={% url 'change_password' %}>Change your password</a></li>
 					<a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href = "#">Messages <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href={% url 'postman_inbox' %}>View inbox</a></li>

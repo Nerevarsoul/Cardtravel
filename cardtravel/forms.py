@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Button
+from crispy_forms.layout import Button, Layout
 
 from .models import UserProfile, Card, Trade
 
@@ -61,6 +61,31 @@ class LoginForm(forms.Form):
         button.input_type = 'submit'
         button.field_classes = 'btn btn-success form-control'
         self.helper.add_input(button)
+
+
+class ChangePasswordForm(forms.Form):
+
+    password = forms.CharField(required=True, 
+                               widget=forms.PasswordInput())
+    new_password = forms.CharField(required=True, 
+                                    widget=forms.PasswordInput())
+    new_password2 = forms.CharField(required=True, 
+                                    widget=forms.PasswordInput())
+
+    def __init__(self, *args, **kwargs):
+        super(ChangePasswordForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_class = 'form-inline'
+        self.helper.layout = Layout('password', 'new_password', 'new_password2')
+        button = Button('send_button', 'Sign in')
+        button.input_type = 'submit'
+        button.field_classes = 'btn btn-success form-control'
+        self.helper.add_input(button)
+
+    def clean(self):
+        data = self.cleaned_data
+        if data["new_password"] != data["new_password2"]:
+            raise forms.ValidationError("Passwords must be same")
 
 
 class CardForm(forms.ModelForm):
