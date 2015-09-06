@@ -5,15 +5,36 @@
 {% block content %}
 
 	<div class="container">
-	    <div class="row">
-	        {% autopaginate trades%}
-			{% for trade in trades %}
-				<div class="col-md-6">
-					{% include 'cardtravel/preview/trades.html' %}
+        <div class="row">
+        	<div class="col-md-1 user">
+
+				<a class="navbar-brand dropdown-toggle" data-toggle="dropdown" href = "#">Order by<b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a href="?q=card">card</a></li>
+					<li><a href="?q=user">user</a></li>
+					<li><a href="?q=condition">condition</a></li>
+				</ul>
+			</div>
+
+
+			<div class="col-md-11">
+
+				<div class="container">
+				    <div class="row">
+				        {% autopaginate trades%}
+						{% for trade in trades %}
+							<div class="col-md-6">
+								{% include 'cardtravel/preview/trades.html' %}
+							</div>
+						{% endfor %}
+					</div>
 				</div>
-			{% endfor %}
+
+			</div>
+
 		</div>
 	</div>
+
 
 	{% paginate %}
 

@@ -279,7 +279,8 @@ class TradesView(ListView):
         return context
 
     def get_queryset(self):
-        self.queryset = Trade.objects.order_by("-date")\
+        q = self.request.GET.get('q', '-date')
+        self.queryset = Trade.objects.order_by(q)\
                                      .filter(status="active")\
                                      .select_related("user", "card")
         return self.queryset
