@@ -31,3 +31,13 @@ def card_sidebar():
         return args
 
 register.inclusion_tag('cardtravel/preview/card_sidebar.html')(card_sidebar)
+
+
+def paginate(paginate_objects):
+    args = {}
+    args["paginate_objects"] = paginate_objects
+    return args
+
+
+
+register.inclusion_tag('cardtravel/preview/pagination.html')(paginate)    
